@@ -20,9 +20,9 @@ $current = basename($_SERVER['SCRIPT_NAME']);
 
       <li class="nav-item">
         <a 
-          href="edit_order.php" 
-          class="nav-link<?= $current === 'edit_order.php' ? ' active' : '' ?>" 
-          <?= $current === 'edit_order.php' ? 'aria-current="page"' : '' ?>>
+          href="index.php" 
+          class="nav-link<?= $current === 'index.php' ? ' active' : '' ?>" 
+          <?= $current === 'index.php' ? 'aria-current="page"' : '' ?>>
           <span data-feather="file"></span>
           Orders
         </a>
@@ -35,16 +35,6 @@ $current = basename($_SERVER['SCRIPT_NAME']);
           <?= $current === 'products.php' ? 'aria-current="page"' : '' ?>>
           <span data-feather="shopping-cart"></span>
           Products
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a 
-          href="customers.php" 
-          class="nav-link<?= $current === 'customers.php' ? ' active' : '' ?>" 
-          <?= $current === 'customers.php' ? 'aria-current="page"' : '' ?>>
-          <span data-feather="users"></span>
-          Customers
         </a>
       </li>
 
