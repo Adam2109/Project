@@ -58,7 +58,14 @@ $products = $stmt2->get_result();
     <main class="col-md-10 ml-sm-auto px-4" style="padding-top:30px;">
       <h1>Dashboard</h1>
       <h2 style="font-size:2rem; margin:20px 0 15px;">Products</h2>
-      <table class="table table-bordered table-hover bg-white">
+      <?php if(isset($_GET['edit_seccess_message'])){?>
+        <p class="text-center" style="color: green;"><?php echo $_GET['edit_seccess_message'];?></p>
+      <?php } ?>
+      
+      <?php if(isset($_GET['edit_failure_message'])){?>
+        <p class="text-center" style="color: red;"><?php echo $_GET['edit_failure_message'];?></p>
+      <?php } ?>
+        <table class="table table-bordered table-hover bg-white">
         <thead>
           <tr>
             <th>Product Id</th>
@@ -83,8 +90,8 @@ $products = $stmt2->get_result();
               <td><?php echo $product['product_special_offer']. "%"; ?></td>
               <td><?php echo $product['product_category']; ?></td>
               <td><?php echo $product['product_color']; ?></td>
-              <td><a href="edit_order.php?order_id=<?php echo $order['order_id']; ?>" class="btn btn-primary btn-sm">Edit</a></td>
-              <td><a href="delete_order.php?order_id=<?php echo $order['order_id']; ?>" class="btn btn-danger btn-sm">Delete</a></td>
+              <td><a href="edit_product.php?product_id=<?php echo $product['product_id']; ?>" class="btn btn-primary btn-sm">Edit</a></td>
+              <td><a href="delete_product.php?product_id=<?php echo $product['product_id']; ?>" class="btn btn-danger btn-sm">Delete</a></td>
             </tr>
           <?php } ?>
         </tbody>
