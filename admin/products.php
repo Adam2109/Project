@@ -1,12 +1,15 @@
 <?php
 session_start();
 include __DIR__ . '/header.php';
+?>
 
+<?php
 if(!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
   header('Location: login.php?error=please log in first');
   exit;
 }
-
+?>
+<?php
 if(isset($_GET['page_no']) && $_GET['page_no'] != ""){
     $page_no = $_GET['page_no'];
 } else {
@@ -65,6 +68,17 @@ $products = $stmt2->get_result();
       <?php if(isset($_GET['edit_failure_message'])){?>
         <p class="text-center" style="color: red;"><?php echo $_GET['edit_failure_message'];?></p>
       <?php } ?>
+
+      <?php if(isset($_GET['deleted_successfully'])){?>
+        <p class="text-center" style="color: green;"><?php echo $_GET['deleted_successfully'];?></p>
+      <?php } ?>
+      
+      <?php if(isset($_GET['deleted_failure'])){?>
+        <p class="text-center" style="color: red;"><?php echo $_GET['deleted_failure'];?></p>
+      <?php } ?>  
+
+
+
         <table class="table table-bordered table-hover bg-white">
         <thead>
           <tr>
