@@ -77,7 +77,13 @@ $products = $stmt2->get_result();
         <p class="text-center" style="color: red;"><?php echo $_GET['deleted_failure'];?></p>
       <?php } ?>  
 
-
+      <?php if(isset($_GET['product_created'])){?>
+        <p class="text-center" style="color: green;"><?php echo $_GET['product_created'];?></p>
+      <?php } ?>
+      
+      <?php if(isset($_GET['product_failed'])){?>
+        <p class="text-center" style="color: red;"><?php echo $_GET['product_failed'];?></p>
+      <?php } ?>  
 
         <table class="table table-bordered table-hover bg-white">
         <thead>
