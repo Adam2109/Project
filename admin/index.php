@@ -58,6 +58,16 @@ $orders = $stmt2->get_result();
     <main class="col-md-10 ml-sm-auto px-4" style="padding-top:30px;">
       <h1>Dashboard</h1>
       <h2 style="font-size:2rem; margin:20px 0 15px;">Orders</h2>
+      
+      <?php if(isset($_GET['order_updated'])){?>
+        <p class="text-center" style="color: green;"><?php echo $_GET['order_updated'];?></p>
+      <?php } ?>
+      
+      <?php if(isset($_GET['order_failed'])){?>
+        <p class="text-center" style="color: red;"><?php echo $_GET['order_failed'];?></p>
+      <?php } ?>
+      
+      
       <table class="table table-bordered table-hover bg-white">
         <thead>
           <tr>
