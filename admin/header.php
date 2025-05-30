@@ -49,7 +49,7 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 <body>
   <div class="topbar">
-    <div><strong>Company name</strong></div>
+    <div><strong>MaxMotion</strong></div>
     <div>
       <?php if (!empty($_SESSION['admin_logged_in'])): ?>
         <a href="logout.php?logout=1">Sign out</a>

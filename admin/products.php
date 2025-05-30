@@ -85,6 +85,15 @@ $products = $stmt2->get_result();
         <p class="text-center" style="color: red;"><?php echo $_GET['product_failed'];?></p>
       <?php } ?>  
 
+      <?php if(isset($_GET['images_updated'])){?>
+        <p class="text-center" style="color: green;"><?php echo $_GET['images_updated'];?></p>
+      <?php } ?>
+      
+      <?php if(isset($_GET['images_failed'])){?>
+        <p class="text-center" style="color: red;"><?php echo $_GET['images_failed'];?></p>
+      <?php } ?>    
+
+
         <table class="table table-bordered table-hover bg-white">
         <thead>
           <tr>
@@ -95,7 +104,7 @@ $products = $stmt2->get_result();
             <th>Product Offer</th>
             <th>Product Category</th>
             <th>Product Color</th>
-            
+            <th>Edit Images</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
@@ -110,6 +119,7 @@ $products = $stmt2->get_result();
               <td><?php echo $product['product_special_offer']. "%"; ?></td>
               <td><?php echo $product['product_category']; ?></td>
               <td><?php echo $product['product_color']; ?></td>
+              <td><a href="<?php echo "edit_images.php?product_id=".$product['product_id']."&product_name=".$product['product_name']; ?>" class="btn btn-warning btn-sm">Edit Images</a></td>
               <td><a href="edit_product.php?product_id=<?php echo $product['product_id']; ?>" class="btn btn-primary btn-sm">Edit</a></td>
               <td><a href="delete_product.php?product_id=<?php echo $product['product_id']; ?>" class="btn btn-danger btn-sm">Delete</a></td>
             </tr>

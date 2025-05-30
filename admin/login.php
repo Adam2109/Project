@@ -2,41 +2,37 @@
 session_start();
 include('../server/connection.php');
 
+// Если админ уже вошёл — перенаправление
 if (isset($_SESSION['admin_logged_in'])) {
     header('Location: index.php');
     exit;
 }
 
+$error = '';
+
+// Обработка входа
 if (isset($_POST['login_btn'])) {
     $email    = $_POST['email'];
-    $password = md5($_POST['password']);
+    $password = $_POST['password']; // Без md5
 
-    $stmt = $conn->prepare("
-        SELECT admin_id, admin_name, admin_email, admin_password
-        FROM admins
-        WHERE admin_email = ? AND admin_password = ?
-        LIMIT 1
-    ");
-    $stmt->bind_param('ss', $email, $password);
+    // Получение данных админа по email
+    $stmt = $conn->prepare("SELECT admin_id, admin_name, admin_email, admin_password FROM admins WHERE admin_email = ? LIMIT 1");
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->bind_result($admin_id, $admin_name, $admin_email, $hashed_password);
+    $stmt->fetch();
 
-    if ($stmt->execute()) {
-        $stmt->bind_result($admin_id, $admin_name, $admin_email, $admin_password);
-        $stmt->store_result();
-        if ($stmt->num_rows() === 1) {
-            $stmt->fetch();
-            $_SESSION['admin_id']        = $admin_id;
-            $_SESSION['admin_name']      = $admin_name;
-            $_SESSION['admin_email']     = $admin_email;
-            $_SESSION['admin_logged_in'] = true;
-            header('Location: index.php?login_success=logged in successfully');
-            exit;
-        } else {
-            header('Location: login.php?error=could not verify your account');
-            exit;
-        }
-    } else {
-        header('Location: login.php?error=something went wrong');
+    // Проверка пароля
+    if ($stmt->num_rows() === 1 && password_verify($password, $hashed_password)) {
+        $_SESSION['admin_id']        = $admin_id;
+        $_SESSION['admin_name']      = $admin_name;
+        $_SESSION['admin_email']     = $admin_email;
+        $_SESSION['admin_logged_in'] = true;
+        header('Location: index.php?login_success=logged in successfully');
         exit;
+    } else {
+        $error = 'Invalid email or password';
     }
 }
 ?>
@@ -107,6 +103,11 @@ if (isset($_POST['login_btn'])) {
 <div class="login-wrapper">
   <div class="login-container">
     <h2>Admin Login</h2>
+
+    <?php if (!empty($error)): ?>
+      <div class="alert alert-danger text-center"><?php echo $error; ?></div>
+    <?php endif; ?>
+
     <form action="login.php" method="POST" enctype="multipart/form-data">
       <div class="form-group">
         <label for="email">Email address</label>
