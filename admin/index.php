@@ -66,7 +66,13 @@ $orders = $stmt2->get_result();
       <?php if(isset($_GET['order_failed'])){?>
         <p class="text-center" style="color: red;"><?php echo $_GET['order_failed'];?></p>
       <?php } ?>
+       <?php if(isset($_GET['deleted_successfully'])){?>
+        <p class="text-center" style="color: green;"><?php echo $_GET['deleted_successfully'];?></p>
+      <?php } ?>
       
+      <?php if(isset($_GET['deleted_failure'])){?>
+        <p class="text-center" style="color: red;"><?php echo $_GET['deleted_failure'];?></p>
+      <?php } ?>  
       
       <table class="table table-bordered table-hover bg-white">
         <thead>

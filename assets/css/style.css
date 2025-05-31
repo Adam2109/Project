@@ -343,7 +343,7 @@ footer .copyright img{
 }
 
 .navbar .brand{
-    color: coral;
+    color: coral !important;
     margin: 3px 5px;
     font-size: 1.5rem;
 }

@@ -17,8 +17,10 @@ session_start();
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 fixed-top">
     <div class="container">
-        <img class="logo" src="assets/imgs/logo.jpeg"/>
-        <h2 class="brand">MaxMotion</h2>
+        <a href="index.php" class="d-flex align-items-center text-decoration-none">
+            <img class="logo" src="assets/imgs/logo.jpeg" alt="MaxMotion Logo"/>
+            <h2 class="brand mb-0 ms-2 text-dark">MaxMotion</h2>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -33,9 +35,9 @@ session_start();
 
                     <!-- Перевірка на авторизацію -->
                     <?php if (!isset($_SESSION['user_id'])) { ?>
-                        <a href="login.php"><i class="fas fa-heart"></i></a> <!-- Перенаправлення на сторінку логіну -->
+                        <a href="login.php"><i class="fas fa-heart"></i></a>
                     <?php } else { ?>
-                        <a href="wishlist.php"><i class="fas fa-heart"></i></a> <!-- Якщо авторизований, перехід на wishlist -->
+                        <a href="wishlist.php"><i class="fas fa-heart"></i></a>
                     <?php } ?>
                 </li>
             </ul>
