@@ -2,18 +2,20 @@
      <footer class="mt-5 py-5">
         <div class="row container mx-auto pt-5">
           <div class="footer-one col-lg-3 col-md-6 col-sm-12">
+            <a href="index.php" class="d-flex align-items-center text-decoration-none">
             <img class="logo" src="assets/imgs/logo.jpeg"/>
-            <p class="pt-3">We provide the best priducts for the most affordable prices</p>
+            </a>
+            <p class="pt-3">We provide the best products for the most affordable prices</p>
           </div>
           <div class="footer-one col-lg-3 col-md-6 col-sm-12">
             <h5 class="pb-2">Featured</h5>
             <ul class="text-uppercase">
-              <li><a href="#">men</a></li>
-              <li><a href="#">women</a></li>
-              <li><a href="#">boys</a></li>
-              <li><a href="#">girls</a></li>
-              <li><a href="#">new arrivals</a></li>
-              <li><a href="#">clothes</a></li>
+              <li><a href="shop.php">men</a></li>
+              <li><a href="shop.php">women</a></li>
+              <li><a href="shop.php">boys</a></li>
+              <li><a href="shop.php">girls</a></li>
+              <li><a href="shop.php">new arrivals</a></li>
+              <li><a href="shop.php">clothes</a></li>
             </ul>
           </div>
           <div class="footer-one col-lg-3 col-md-6 col-sm-12">

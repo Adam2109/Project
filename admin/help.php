@@ -43,7 +43,7 @@ $help_requests = $stmt->get_result();
                 <table class="table table-bordered table-hover align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th>#</th>
+                            <th>№</th>
                             <th>Email</th>
                             <th>Message</th>
                             <th>Date</th>
