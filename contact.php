@@ -9,7 +9,9 @@
         <p class="w-50 mx-auto">Email address: <span>info@gmail.com</span></p>
         <p class="w-50 mx-auto">
             We work 24/7 to answer your questions.
-            <button id="helpBtn" class="btn btn-primary ms-3">Help</button>
+            <button id="helpBtn" class="btn btn-primary ms-3">
+                Help <span id="helpIcon"></span>
+            </button>
         </p>
     </div>
 </section>
@@ -20,7 +22,6 @@
         <span id="closeModal" style="float:right; font-size: 28px; cursor: pointer;">&times;</span>
         <h4>Ask for Help</h4>
 
-        <!-- Історія повідомлень -->
         <?php
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -57,7 +58,6 @@
         }
         ?>
 
-        <!-- Форма для нового звернення -->
         <form method="POST" action="server/send_help.php">
             <div class="mb-3">
                 <label for="message" class="form-label">Your question</label>
@@ -73,9 +73,49 @@
     const btn = document.getElementById('helpBtn');
     const close = document.getElementById('closeModal');
 
-    btn.onclick = () => modal.style.display = "block";
+    btn.onclick = () => {
+        modal.style.display = "block";
+
+        // Очистити іконку 🔔
+        btn.classList.remove('btn-warning');
+        btn.classList.add('btn-primary');
+        const icon = document.getElementById('helpIcon');
+        if (icon) {
+            icon.innerText = '';
+        }
+
+        // Позначити повідомлення як прочитані
+        fetch('check_new_reply.php?mark_read=1');
+    };
+
     close.onclick = () => modal.style.display = "none";
-    window.onclick = event => { if (event.target == modal) modal.style.display = "none"; };
+
+    window.onclick = event => {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+
+    function checkForNewReply() {
+        fetch('check_new_reply.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.new_reply && btn) {
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-warning');
+
+                    const icon = document.getElementById('helpIcon');
+                    if (icon) {
+                        icon.innerText = '🔔';
+                    }
+                }
+            })
+            .catch(err => console.error('Check reply error:', err));
+    }
+
+    // Запустити перевірку кожні 15 секунд
+    setInterval(checkForNewReply, 15000);
+    checkForNewReply();
 </script>
 
 <?php include('layouts/footer.php'); ?>
