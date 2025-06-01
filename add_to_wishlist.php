@@ -22,12 +22,12 @@ if ($query->num_rows === 0) {
     $stmt = $conn->prepare("INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)");
     $stmt->bind_param("ii", $user_id, $product_id);
     if ($stmt->execute()) {
-        $_SESSION['message'] = "Товар успішно додано в список бажань!";
+        $_SESSION['message'] = "Product successfully added to wishlist!";
     } else {
-        $_SESSION['message'] = "Помилка при додаванні товару в список бажань.";
+        $_SESSION['message'] = "Error adding product to wishlist.";
     }
 } else {
-    $_SESSION['message'] = "Цей товар вже є у вашому списку бажань.";
+    $_SESSION['message'] = "This product is already on your wishlist.";
 }
 
 header('Location: wishlist.php'); // Перенаправлення на сторінку списку бажань

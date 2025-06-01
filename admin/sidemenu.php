@@ -3,6 +3,17 @@
 
 // Отримуємо назву поточного скрипту
 $current = basename($_SERVER['SCRIPT_NAME']);
+
+// Підключення до бази
+include('../server/connection.php');
+
+// Запит до бази: скільки нових звернень без відповіді
+$new_requests_count = 0;
+$query = "SELECT COUNT(*) AS count FROM help_requests WHERE reply IS NULL";
+$result = $conn->query($query);
+if ($result && $row = $result->fetch_assoc()) {
+    $new_requests_count = $row['count'];
+}
 ?>
 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
   <div class="position-sticky pt-3">
@@ -20,9 +31,9 @@ $current = basename($_SERVER['SCRIPT_NAME']);
 
       <li class="nav-item">
         <a 
-          href="index.php" 
-          class="nav-link<?= $current === 'index.php' ? ' active' : '' ?>" 
-          <?= $current === 'index.php' ? 'aria-current="page"' : '' ?>>
+          href="orders.php" 
+          class="nav-link<?= $current === 'orders.php' ? ' active' : '' ?>" 
+          <?= $current === 'orders.php' ? 'aria-current="page"' : '' ?>>
           <span data-feather="file"></span>
           Orders
         </a>
@@ -58,13 +69,18 @@ $current = basename($_SERVER['SCRIPT_NAME']);
         </a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item d-flex align-items-center">
         <a 
           href="help.php" 
-          class="nav-link<?= $current === 'help.php' ? ' active' : '' ?>" 
+          class="nav-link d-flex justify-content-between align-items-center<?= $current === 'help.php' ? ' active' : '' ?>" 
           <?= $current === 'help.php' ? 'aria-current="page"' : '' ?>>
-          <span data-feather="help-circle"></span>
-          Help
+          <span>
+            <span data-feather="help-circle"></span>
+            Help
+          </span>
+          <?php if ($new_requests_count > 0): ?>
+            <span class="badge bg-danger ms-2"><?= $new_requests_count ?></span>
+          <?php endif; ?>
         </a>
       </li>
 
