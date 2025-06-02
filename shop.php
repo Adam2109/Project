@@ -6,6 +6,7 @@ $products = [];
 $categories = $_POST['categories'] ?? [];
 $price = $_POST['price'] ?? 1000;
 $product_name = trim($_POST['product_name'] ?? "");
+$product_color = trim($_POST['product_color'] ?? "");
 $sort_by = $_POST['sort_by'] ?? "";
 $page_no = isset($_GET['page_no']) && $_GET['page_no'] != "" ? $_GET['page_no'] : 1;
 
@@ -27,6 +28,12 @@ if (isset($_POST['search'])) {
     if (!empty($product_name)) {
         $conditions[] = "product_name LIKE ?";
         $params[] = '%' . $product_name . '%';
+        $types .= "s";
+    }
+
+    if (!empty($product_color)) {
+        $conditions[] = "product_color LIKE ?";
+        $params[] = '%' . $product_color . '%';
         $types .= "s";
     }
 
@@ -81,8 +88,8 @@ if (isset($_POST['search'])) {
 ?>
 
 <?php include('layouts/header.php'); ?>
-
-<section id="search" class="my-5 py-5 ms-2">
+<main>
+<section id="search" class="my-5 py-5 ms-2" style="padding-bottom: 100px;">
     <div class="container mt-5 py-5">
         <p>Search Products</p>
         <hr>
@@ -93,6 +100,14 @@ if (isset($_POST['search'])) {
                 <p>Product Name</p>
                 <input type="text" class="form-control w-100" name="product_name" placeholder="Product name"
                     value="<?php echo htmlspecialchars($product_name); ?>" style="max-width: 400px;">
+            </div>
+        </div>
+
+        <div class="row mx-auto container mt-3">
+            <div class="col-lg-6 col-md-8 col-sm-12">
+                <p>Color</p>
+                <input type="text" class="form-control w-100" name="product_color" placeholder="Enter color"
+                    value="<?php echo htmlspecialchars($product_color); ?>" style="max-width: 400px;">
             </div>
         </div>
 
@@ -113,7 +128,7 @@ if (isset($_POST['search'])) {
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <p>Category</p>
                 <?php
-                $all_categories = ['shoes', 'coats', 'watches', 'featured'];
+                $all_categories = ['shoes', 't-shirts', 'accessories', 'featured'];
                 foreach ($all_categories as $cat) {
                     $checked = in_array($cat, $categories) ? "checked" : "";
                     echo <<<HTML
@@ -159,7 +174,7 @@ if (isset($_POST['search'])) {
     <div class="container mt-5 py-5">
         <h3>Our Products</h3>
         <hr>
-        <p>Here you can check out our featured products</p>
+        <p>Here you can check out our products</p>
     </div>
     <div class="row mx-auto container">
         <?php while ($row = $products->fetch_assoc()) { ?>
@@ -199,5 +214,5 @@ if (isset($_POST['search'])) {
         </nav>
     </div>
 </section>
-
+</main>
 <?php include('layouts/footer.php'); ?>

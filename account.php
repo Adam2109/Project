@@ -1,5 +1,6 @@
+<?php include('layouts/header.php');?>
 <?php
-session_start();
+// session_start();
 include('server/connection.php');
 if(!isset($_SESSION['logged_in'])){
   header('location: login.php');
@@ -57,7 +58,7 @@ if(isset($_SESSION['logged_in'])){
 
 
 
-<?php include('layouts/header.php');?>
+
 
     <!--Account--> 
     <section class="my-5 py-5">

@@ -55,9 +55,12 @@
                 }
             }
             $stmt->close();
+        } else {
+            echo "<p class='text-danger'>Please <a href='login.php'>log in</a> to ask for help.</p>";
         }
         ?>
 
+        <?php if (isset($_SESSION['user_id'])): ?>
         <form method="POST" action="server/send_help.php">
             <div class="mb-3">
                 <label for="message" class="form-label">Your question</label>
@@ -65,6 +68,7 @@
             </div>
             <input type="submit" class="btn btn-success" value="Send">
         </form>
+        <?php endif; ?>
     </div>
 </div>
 

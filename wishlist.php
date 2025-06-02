@@ -1,8 +1,13 @@
+<?php include('layouts/header.php'); ?>
 <?php
-session_start();
+// session_start();
 include('server/connection.php');
 
-// Перевірка на авторизацію
+if(!isset($_SESSION['logged_in'])){
+    header('Location: wishlist_check.php');
+    exit;
+}
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -20,10 +25,12 @@ $stmt->execute();
 $wishlist = $stmt->get_result();
 ?>
 
-<?php include('layouts/header.php'); ?>
-
-<main class="container my-5 pt-5">
-    <h2 class="mb-4">My wishlist</h2>
+<!-- Wishlist -->
+<section class="container my-5 py-5">
+    <div class="container mt-5">
+        <h2 class="font-weight-bold">My Wishlist</h2>
+        <hr>
+    </div>
 
     <?php if (isset($_SESSION['message'])): ?>
         <div id="message" class="alert alert-info">
@@ -36,7 +43,7 @@ $wishlist = $stmt->get_result();
         <div class="row">
             <?php while ($item = $wishlist->fetch_assoc()): ?>
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card h-100" style="border: 2px solid #333333; border-radius: 10px;"> <!-- Темно-сіра рамка -->
+                    <div class="card h-100" style="border: 2px solid #333333; border-radius: 10px;">
                         <img src="assets/imgs/<?php echo $item['product_image']; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($item['product_name'], ENT_QUOTES); ?>"/>
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title"><?php echo htmlspecialchars($item['product_name'], ENT_QUOTES); ?></h5>
@@ -52,7 +59,6 @@ $wishlist = $stmt->get_result();
                                 </button>
                             </form>
 
-                            <!-- Кнопка кошика (переміщена вправо та збільшена) -->
                             <form method="POST" action="remove_from_wishlist.php" class="d-inline">
                                 <input type="hidden" name="product_id" value="<?php echo $item['product_id']; ?>"/>
                                 <button class="btn btn-link btn-sm text-danger" style="font-size: 1.5rem; padding: 10px; margin-top: 10px; align-self: flex-end;">
@@ -65,19 +71,17 @@ $wishlist = $stmt->get_result();
             <?php endwhile; ?>
         </div>
     <?php else: ?>
-        <p>Your wish list is empty.</p>
+        <p class="text-center">Your wish list is empty.</p>
     <?php endif; ?>
-</main>
+</section>
 
 <?php include('layouts/footer.php'); ?>
 
 <script>
-    // Якщо є повідомлення
     const message = document.getElementById("message");
     if (message) {
-        // Через 2 секунди прибираємо повідомлення
         setTimeout(() => {
             message.style.display = "none";
-        }, 2000); // 2000 мс = 2 секунди
+        }, 2000);
     }
 </script>

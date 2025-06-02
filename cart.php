@@ -1,6 +1,7 @@
+<?php include('layouts/header.php');?>
 <?php
 
-session_start();
+// session_start();
 
 
 if(isset($_POST['add_to_cart'])){
@@ -87,7 +88,7 @@ function calculateTotalCart(){
 
 
 
-<?php include('layouts/header.php');?>
+
 
 
       <!--Cart-->

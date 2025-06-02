@@ -29,7 +29,7 @@ if ($result && $row = $result->fetch_assoc()) {
         </a>
       </li>
 
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a 
           href="orders.php" 
           class="nav-link<?= $current === 'orders.php' ? ' active' : '' ?>" 
@@ -37,7 +37,7 @@ if ($result && $row = $result->fetch_assoc()) {
           <span data-feather="file"></span>
           Orders
         </a>
-      </li>
+      </li> -->
 
       <li class="nav-item">
         <a 

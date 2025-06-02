@@ -33,17 +33,17 @@
     </div>
     <!--Two-->
     <div class="one col-lg-4 col-md-12 col-sm-12">
-      <img class="img-fluid" src="assets/imgs/2.jpeg"/>
+      <img class="img-fluid" src="assets/imgs/white t-shirt1.jpeg"/>
       <div class="details">
-        <h2>Awesome Jacket</h2>
+        <h2>Awesome Clothes</h2>
         <button class="text-uppercase">Shop Now</button>
       </div>
     </div>
     <!--Three-->
     <div class="one col-lg-4 col-md-12 col-sm-12">
-      <img class="img-fluid" src="assets/imgs/3.jpeg"/>
+      <img class="img-fluid" src="assets/imgs/Bag1.jpeg"/>
       <div class="details">
-        <h2>50% OFF Watches</h2>
+        <h2>50% OFF Accessories</h2>
         <button class="text-uppercase">Shop Now</button>
       </div>
     </div>
@@ -90,21 +90,21 @@
 <section id="banner" class="my-5 py-5">
   <div class="container">
     <h4>MID SEASON'S SALE</h4>
-    <h1>Autumn Collection <br> UP to 30% OFF</h1>  
+    <h1>Season Collection <br> UP to 30% OFF</h1>  
     <button class="text-uppercase">shop now</button>
   </div>
 </section>
 
-<!--Dresses & Coats-->
-<section id="coats" class="my-5">
+<!--T-shirts-->
+<section id="t-shirts" class="my-5">
   <div class="container text-center mt-5 py-5">
-    <h3>Dresses & Coats</h3>
+    <h3>T-shirts</h3>
     <hr class="mx-auto">
     <p>Here you can check out our amazing clothes</p>
   </div>
   <div class="row mx-auto container-fluid">
-    <?php include('server/get_coats.php'); ?>
-    <?php while($row = $coats_products->fetch_assoc()){ ?>
+    <?php include('server/get_tshirts.php'); ?>
+    <?php while($row = $tshirts_products->fetch_assoc()){ ?>
       <div class="product text-center col-lg-3 col-md-4 col-sm-12" style="position: relative;">
         <!-- Wishlist button -->
         <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
@@ -131,16 +131,16 @@
   </div>
 </section>
 
-<!--Watches-->
-<section id="watches" class="my-5">
+<!--Accessories-->
+<section id="accessories" class="my-5" >
   <div class="container text-center mt-5 py-5">
-    <h3>Best Watches</h3>
+    <h3>Best Accessories</h3>
     <hr class="mx-auto">
-    <p>Check out our unique watches</p>
+    <p>Check out our unique accessories</p>
   </div>
   <div class="row mx-auto container-fluid">
-    <?php include('server/get_watches.php'); ?>
-    <?php while($row = $watches->fetch_assoc()){ ?>
+    <?php include('server/get_accessories.php'); ?>
+    <?php while($row = $accessories->fetch_assoc()){ ?>
       <div class="product text-center col-lg-3 col-md-4 col-sm-12" style="position: relative;">
         <!-- Wishlist button -->
         <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">

@@ -1,13 +1,23 @@
 <?php
+// Старт сессии
 session_start();
 
-// Очищення всіх сесійних змінних
-session_unset();
+// Очистить все переменные сессии
+$_SESSION = [];
 
-// Завершення сесії
+// Удалить cookie сессии
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000,
+        $params["path"], $params["domain"],
+        $params["secure"], $params["httponly"]
+    );
+}
+
+// Удалить саму сессию
 session_destroy();
 
-// Перенаправлення на сторінку логіну після виходу
+// Перенаправить на страницу входа
 header('Location: login.php');
 exit();
 ?>

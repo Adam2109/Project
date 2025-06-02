@@ -1,7 +1,12 @@
 <?php
 session_start();
 include('server/connection.php');
+if(!isset($_SESSION['logged_in'])){
+        header('Location: wishlist_check.php');
 
+        exit;
+       //if user is logged in
+    }else{
 // Перевірка на авторизацію
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -32,4 +37,5 @@ if ($query->num_rows === 0) {
 
 header('Location: wishlist.php'); // Перенаправлення на сторінку списку бажань
 exit;
+}
 ?>
