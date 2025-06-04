@@ -42,6 +42,12 @@ if(isset($_POST['login_btn'])){
 
 ?>
 
+<?php
+$login_message = '';
+if (isset($_GET['message']) && $_GET['message'] == 'login_required') {
+    $login_message = 'You need to log in to access your cart.';
+}
+?>
 
     <!--Login-->
     <section class="my-5 py-5">
@@ -50,6 +56,10 @@ if(isset($_POST['login_btn'])){
             <hr class="mx-auto">
         </div>
         <div class="mx-auto container">
+          <?php if (!empty($login_message)): ?>
+<div class="alert alert-warning"><?php echo $login_message; ?></div>
+<?php endif; ?>
+
             <form id="login-form" method="POST" action="login.php" >
               <p style="color: red;" class="text-center"><?php if(isset($_GET['error'])){ echo $_GET['error']; }?></p>
                 <div class="form-group">

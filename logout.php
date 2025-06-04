@@ -1,23 +1,27 @@
 <?php
-// Старт сессии
 session_start();
 
-// Очистить все переменные сессии
-$_SESSION = [];
+include('server/connection.php');
 
-// Удалить cookie сессии
-if (ini_get("session.use_cookies")) {
-    $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 42000,
-        $params["path"], $params["domain"],
-        $params["secure"], $params["httponly"]
-    );
+// Если пользователь авторизован, очистим его корзину в БД
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+
+    $delete_cart_sql = "DELETE FROM cart WHERE user_id = ?";
+    $stmt = $conn->prepare($delete_cart_sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
 }
 
-// Удалить саму сессию
+// Удаляем корзину из сессии тоже!
+unset($_SESSION['cart']);
+unset($_SESSION['total']);
+unset($_SESSION['quantity']);
+
+// Удаляем все сессионные данные
+session_unset();
 session_destroy();
 
-// Перенаправить на страницу входа
-header('Location: login.php');
+header("Location: login.php");
 exit();
 ?>
