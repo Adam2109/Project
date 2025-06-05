@@ -1,3 +1,4 @@
+<?php include('layouts/header.php'); ?>
 <?php
 
 include('server/connection.php');
@@ -12,9 +13,24 @@ if (isset($_GET['product_id'])) {
     exit;
 }
 
+$wishlist_product_ids = [];
+
+if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $wishlist_query = $conn->prepare("SELECT product_id FROM wishlist WHERE user_id = ?");
+    $wishlist_query->bind_param("i", $user_id);
+    $wishlist_query->execute();
+    $result = $wishlist_query->get_result();
+    while ($row_wishlist = $result->fetch_assoc()) {
+        $wishlist_product_ids[] = $row_wishlist['product_id'];
+    }
+}
+
+
+
 ?>
 
-<?php include('layouts/header.php'); ?>
+
 
 <!-- Single product -->
 <section class="container single-product my-5 pt-5">
@@ -60,7 +76,7 @@ if (isset($_GET['product_id'])) {
       </div>
 
       <div class="col-lg-6 col-md-12 col-12">
-        <h6>Men/Shoes</h6>
+        <!-- <h6>Men/Shoes</h6> -->
         <h3 class="py-4"><?php echo $row['product_name']; ?></h3>
         <h2><?php echo $row['product_price']; ?></h2>
 
@@ -77,12 +93,13 @@ if (isset($_GET['product_id'])) {
 
           <!-- Add to Wishlist -->
           <form method="POST" action="add_to_wishlist.php" class="d-inline-block">
-            <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
-            <button type="submit" class="wishlist-btn" title="Add to wishlist">
-              <i class="far fa-heart"></i>
-              <i class="fas fa-heart"></i>
-            </button>
-          </form>
+          <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
+          <button type="submit" class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>" title="Add to wishlist">
+            <i class="far fa-heart"></i>
+            <i class="fas fa-heart"></i>
+          </button>
+        </form>
+
         </div>
 
         <h4 class="mt-5 mb-3">Product details</h4>

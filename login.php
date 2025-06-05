@@ -57,8 +57,9 @@ if (isset($_GET['message']) && $_GET['message'] == 'login_required') {
         </div>
         <div class="mx-auto container">
           <?php if (!empty($login_message)): ?>
-<div class="alert alert-warning"><?php echo $login_message; ?></div>
-<?php endif; ?>
+            <div id="login-alert" class="alert alert-warning"><?php echo $login_message; ?></div>
+          <?php endif; ?>
+
 
             <form id="login-form" method="POST" action="login.php" >
               <p style="color: red;" class="text-center"><?php if(isset($_GET['error'])){ echo $_GET['error']; }?></p>
@@ -78,6 +79,16 @@ if (isset($_GET['message']) && $_GET['message'] == 'login_required') {
                 </div>
             </form>
         </div>
+
+        <script>
+          const loginAlert = document.getElementById('login-alert');
+          if (loginAlert) {
+              setTimeout(() => {
+                  loginAlert.style.display = 'none';
+              }, 5000); 
+          }
+        </script>
+
     </section>
 
 <?php include('layouts/footer.php');?>

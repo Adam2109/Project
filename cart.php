@@ -1,75 +1,168 @@
+<?php include('layouts/header.php');?>
 <?php
 
-include('server/connection.php');
-// Обов'язково, якщо не стартувала в server/connection.php
 
-// Перенаправлення неавторизованого користувача
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php?message=login_required');
-    
-    exit();
-}
 
-include('layouts/header.php');
 
-// Тепер твоя логіка ↓ без змін
-$user_id = $_SESSION['user_id'];
-
-// Добавление товара в корзину
-if (isset($_POST['add_to_cart'])) {
-    $product_id = $_POST['product_id'];
-    $product_quantity = $_POST['product_quantity'];
-
-    $check_sql = "SELECT * FROM cart WHERE user_id = ? AND product_id = ?";
-    $check_stmt = $conn->prepare($check_sql);
-    $check_stmt->bind_param("ii", $user_id, $product_id);
-    $check_stmt->execute();
-    $result = $check_stmt->get_result();
-
-    if ($result->num_rows === 0) {
-        $insert_sql = "INSERT INTO cart (user_id, product_id, product_quantity) VALUES (?, ?, ?)";
-        $insert_stmt = $conn->prepare($insert_sql);
-        $insert_stmt->bind_param("iii", $user_id, $product_id, $product_quantity);
-        $insert_stmt->execute();
-    } else {
-        echo "<script>alert('Product is already in your cart');</script>";
+if(isset($_POST['add_to_cart'])){
+  //if user has already added a product
+  if(isset($_SESSION['cart'])){
+    $products_array_ids = array_column($_SESSION['cart'], "product_id");
+    //if product has already added or not
+    if(!in_array($_POST['product_id'], $products_array_ids)){
+      $product_id = $_POST['product_id'];   
+      $product_array = array(
+                        'product_id' => $_POST['product_id'],
+                        'product_name' => $_POST['product_name'],
+                        'product_price' => $_POST['product_price'],
+                        'product_image' => $_POST['product_image'],
+                        'product_quantity' => $_POST['product_quantity']
+      );
+  
+      $_SESSION['cart'][$product_id] = $product_array;
+      // product has already added
+    }else{
+      echo '<script>alert("Product was already added to cart")</script>';
+      //echo '<script>window.location="index.php";</script>';
     }
-}
+    //if this is the first product
+  }else{
 
-// Удаление товара
-if (isset($_POST['remove_product'])) {
     $product_id = $_POST['product_id'];
-    $delete_sql = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
-    $delete_stmt = $conn->prepare($delete_sql);
-    $delete_stmt->bind_param("ii", $user_id, $product_id);
-    $delete_stmt->execute();
-}
-
-// Изменение количества
-if (isset($_POST['edit_quantity'])) {
-    $product_id = $_POST['product_id'];
+    $product_name = $_POST['product_name'];
+    $product_price = $_POST['product_price'];
+    $product_image = $_POST['product_image'];
     $product_quantity = $_POST['product_quantity'];
-    $update_sql = "UPDATE cart SET product_quantity = ? WHERE user_id = ? AND product_id = ?";
-    $update_stmt = $conn->prepare($update_sql);
-    $update_stmt->bind_param("iii", $product_quantity, $user_id, $product_id);
-    $update_stmt->execute();
+
+    $product_array = array(
+                      'product_id' => $product_id,
+                      'product_name' => $product_name,
+                      'product_price' => $product_price,
+                      'product_image' => $product_image,
+                      'product_quantity' => $product_quantity
+    );
+
+    $_SESSION['cart'][$product_id] = $product_array;
+    
+  }
+  //calc total
+  calculateTotalCart();
+//remove product from cart
+}elseif(isset($_POST['remove_product'])){
+  $product_id = $_POST['product_id'];
+  unset($_SESSION['cart'][$product_id]);
+  calculateTotalCart();
+
+}elseif(isset($_POST['edit_quantity'])){
+  $product_id = $_POST['product_id'];
+  $product_quantity = $_POST['product_quantity'];
+
+  $product_array = $_SESSION['cart'][$product_id];
+  $product_array['product_quantity'] = $product_quantity;
+
+  $_SESSION['cart'][$product_id] = $product_array;
+
+  calculateTotalCart();
+    
+}else{
+  // header('location" index.php');
 }
 
-// Получаем корзину пользователя с join'ом на products
-$sql = "SELECT p.product_name, p.product_price, p.product_image, c.product_quantity, c.product_id
-        FROM cart c
-        JOIN products p ON c.product_id = p.product_id
-        WHERE c.user_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$cart_items = $stmt->get_result();
+function calculateTotalCart(){
+  $total_price = 0;
+  $total_quantity = 0;
+  foreach($_SESSION['cart'] as $key => $value){
+    $product = $_SESSION['cart'][$key];
+    $price = $product['product_price'];
+    $quantity = $product['product_quantity'];
 
-// Подсчёт общей суммы и количества
-$total_price = 0;
-$total_quantity = 0;
-foreach ($cart_items as $item) {
-    $total_price += $item['product_price'] * $item['product_quantity'];
-    $total_quantity += $item['product_quantity'];
+    $total_price = $total_price + ($price * $quantity);
+    $total_quantity = $total_quantity + $quantity; 
+  }
+  $_SESSION['total'] = $total_price;
+  $_SESSION['quantity'] = $total_quantity;
 }
+
 ?>
+
+
+
+
+
+
+
+      <!--Cart-->
+      <section class="cart container my-5 py-5">
+        <div class="container mt-5">
+            <h2 class="font-weight-bolde">Your Cart</h2>    
+            <hr>
+        </div>
+        <table class="mt-5 pt-5">
+             <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+             </tr>
+             <?php if(isset($_SESSION['cart'])){?>
+             <?php foreach($_SESSION['cart'] as $key => $value){ ?>
+             <tr>
+                <td>
+                    <div class="product-info">
+                        <img src="assets/imgs/<?php echo $value['product_image'];?>"/>
+                        <div>
+                            <p><?php echo $value['product_name'];?></p>
+                            <small><span>$</span><?php echo $value['product_price'];?></small>
+                            <br>
+                            <form method="POST" action="cart.php">
+                              <input type="hidden" name="product_id" value="<?php echo $value['product_id'];?>"/>
+                              <input type="submit" name="remove_product" class="remove-btn" value="remove"/>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    
+                    <form method="POST" action="cart.php">
+                      <input type="hidden" name="product_id" value="<?php echo $value['product_id'];?>"/>
+                      <input type="number" name="product_quantity" value="<?php echo $value['product_quantity'];?>"/>
+                      <input type="submit" class="edit-btn" value="edit" name="edit_quantity"/>
+                    </form>
+                    
+                </td>
+
+                <td>
+                    <span>$</span>
+                    <span class="product-price"><?php echo $value['product_quantity'] *  $value['product_price'];?></span>
+                </td>
+             </tr>  
+            
+             <?php } ?>
+
+             <?php } ?>
+        </table>
+
+        <div class="cart-total">
+            <table>
+                <!--<tr>
+                    <td>Subtotal</td>
+                    <td>$1950.97</td>
+                </tr> -->
+                <tr>
+                    <td>Total</td>
+                    <?php if(isset($_SESSION['cart'])){ ?>
+                      <td>$ <?php echo $_SESSION['total'];?></td>
+                    <?php } ?>
+                </tr>
+            </table>
+        </div>
+            <div class="checkout-container">
+              <form method="POST" action="checkout.php">
+                <input type="submit" class="btn checkout-btn" value="Checkout" name="checkout"/>
+              </form>
+                
+            </div>
+        </section>
+
+<?php include('layouts/footer.php');?>  

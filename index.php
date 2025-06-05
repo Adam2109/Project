@@ -1,5 +1,22 @@
 <?php include('layouts/header.php');?>
+<?php
+include('server/connection.php');
+?>
 
+<?php
+$wishlist_product_ids = [];
+
+if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $wishlist_query = $conn->prepare("SELECT product_id FROM wishlist WHERE user_id = ?");
+    $wishlist_query->bind_param("i", $user_id);
+    $wishlist_query->execute();
+    $result = $wishlist_query->get_result();
+    while ($row_wishlist = $result->fetch_assoc()) {
+        $wishlist_product_ids[] = $row_wishlist['product_id'];
+    }
+}
+?>
 <!--Home-->
 <section id="home">
   <div class="container">
@@ -109,11 +126,12 @@
         <!-- Wishlist button -->
         <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
           <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
-          <button type="submit" class="wishlist-btn" title="Add to wishlist">
+          <button type="submit" class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>" title="Add to wishlist">
             <i class="far fa-heart"></i>
             <i class="fas fa-heart"></i>
           </button>
         </form>
+
 
         <img class="img-fluid mb-3" src="assets/imgs/<?php echo $row['product_image']?>"/>
         <div class="star">
@@ -142,14 +160,15 @@
     <?php include('server/get_accessories.php'); ?>
     <?php while($row = $accessories->fetch_assoc()){ ?>
       <div class="product text-center col-lg-3 col-md-4 col-sm-12" style="position: relative;">
-        <!-- Wishlist button -->
+       <!-- Wishlist button -->
         <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
           <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
-          <button type="submit" class="wishlist-btn" title="Add to wishlist">
+          <button type="submit" class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>" title="Add to wishlist">
             <i class="far fa-heart"></i>
             <i class="fas fa-heart"></i>
           </button>
         </form>
+
 
         <img class="img-fluid mb-3" src="assets/imgs/<?php echo $row['product_image']?>"/>
         <div class="star">
@@ -181,11 +200,12 @@
         <!-- Wishlist button -->
         <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
           <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
-          <button type="submit" class="wishlist-btn" title="Add to wishlist">
+          <button type="submit" class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>" title="Add to wishlist">
             <i class="far fa-heart"></i>
             <i class="fas fa-heart"></i>
           </button>
         </form>
+
 
         <img class="img-fluid mb-3" src="assets/imgs/<?php echo $row['product_image']?>"/>
         <div class="star">
