@@ -919,3 +919,40 @@ button.remove-btn:hover {
   padding: 0 5px;
 }
 
+/* Заголовки фильтров — коралловый, подчеркнутый */
+#autoFiltersForm label{
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: underline;
+    color: coral; /* коралловый */
+    
+}
+#autoFiltersForm h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: underline;
+    color: coral; /* коралловый */
+     text-align: center; /* Центрируем текст */
+    display: block; 
+}
+
+/* Пункты (например, Football, Running и др.) — светлый коралл */
+#autoFiltersForm .form-check-label {
+    font-size: 0.875rem;
+    text-decoration: none !important;
+    color: #ffffff; /* светлый коралл */
+}
+
+/* Остальные элементы формы */
+#autoFiltersForm input[type="text"],
+#autoFiltersForm select,
+#autoFiltersForm input[type="number"] {
+    font-size: 0.875rem;
+    text-decoration: none !important;
+    color: #555;
+}
+
+/* Убираем подчеркивание ссылок, если есть */
+#autoFiltersForm a {
+    text-decoration: none !important;
+}
