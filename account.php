@@ -72,6 +72,41 @@ if (isset($_POST['edit_profile'])) {
 
 }
 
+if (isset($_POST['edit_phone'])) {
+  $new_phone = $_POST['new_phone'];
+  $user_id = $_SESSION['user_id'];
+  $stmt = $conn->prepare("UPDATE users SET user_phone=? WHERE user_id=?");
+  $stmt->bind_param('si', $new_phone, $user_id);
+  if ($stmt->execute()) {
+    $_SESSION['user_phone'] = $new_phone;
+    header('Location: account.php?message=Phone updated successfully');
+    exit;
+  }
+}
+
+if (isset($_POST['edit_city'])) {
+  $new_city = $_POST['new_city'];
+  $user_id = $_SESSION['user_id'];
+  $stmt = $conn->prepare("UPDATE users SET user_city=? WHERE user_id=?");
+  $stmt->bind_param('si', $new_city, $user_id);
+  if ($stmt->execute()) {
+    $_SESSION['user_city'] = $new_city;
+    header('Location: account.php?message=City updated successfully');
+    exit;
+  }
+}
+
+if (isset($_POST['edit_address'])) {
+  $new_address = $_POST['new_address'];
+  $user_id = $_SESSION['user_id'];
+  $stmt = $conn->prepare("UPDATE users SET user_address=? WHERE user_id=?");
+  $stmt->bind_param('si', $new_address, $user_id);
+  if ($stmt->execute()) {
+    $_SESSION['user_address'] = $new_address;
+    header('Location: account.php?message=Address updated successfully');
+    exit;
+  }
+}
 
 
 // Change password
@@ -123,7 +158,20 @@ if(isset($_POST['change_password'])){
 if(isset($_SESSION['logged_in'])){
 
   $user_id = $_SESSION['user_id'];
-
+   
+    // Якщо деякі поля ще не збережені у сесію — підтягуємо їх з БД
+    if (!isset($_SESSION['user_phone']) || !isset($_SESSION['user_city']) || !isset($_SESSION['user_address'])) {
+        $stmt = $conn->prepare("SELECT user_phone, user_city, user_address FROM users WHERE user_id = ?");
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+        $stmt->bind_result($user_phone, $user_city, $user_address);
+        if ($stmt->fetch()) {
+            $_SESSION['user_phone'] = $user_phone;
+            $_SESSION['user_city'] = $user_city;
+            $_SESSION['user_address'] = $user_address;
+        }
+        $stmt->close();
+    }
   $stmt = $conn->prepare("SELECT * FROM orders WHERE user_id=?");
 
   $stmt->bind_param('i',$user_id);
@@ -218,6 +266,40 @@ if(isset($_SESSION['logged_in'])){
 
         </form>
 
+        <!-- PHONE -->
+        <div class="editable-group">
+          <label>Phone:</label>
+          <span id="phone-display" class="editable-field"><?php echo isset($_SESSION['user_phone']) ? $_SESSION['user_phone'] : '';
+ ?></span>
+          <span class="edit-icon" onclick="editField('phone')">✏️</span>
+        </div>
+        <form id="phone-form" class="edit-form" method="POST" action="account.php">
+          <input type="text" name="new_phone" value="<?php echo isset($_SESSION['user_phone']) ? $_SESSION['user_phone'] : '';
+ ?>" required class="form-control my-2">
+          <button type="submit" name="edit_phone" class="btn btn-sm btn-primary">Save Phone</button>
+        </form>
+
+        <!-- CITY -->
+        <div class="editable-group">
+          <label>City:</label>
+          <span id="city-display" class="editable-field"><?php echo $_SESSION['user_city']; ?></span>
+          <span class="edit-icon" onclick="editField('city')">✏️</span>
+        </div>
+        <form id="city-form" class="edit-form" method="POST" action="account.php">
+          <input type="text" name="new_city" value="<?php echo $_SESSION['user_city']; ?>" required class="form-control my-2">
+          <button type="submit" name="edit_city" class="btn btn-sm btn-primary">Save City</button>
+        </form>
+
+        <!-- ADDRESS -->
+        <div class="editable-group">
+          <label>Address:</label>
+          <span id="address-display" class="editable-field"><?php echo $_SESSION['user_address']; ?></span>
+          <span class="edit-icon" onclick="editField('address')">✏️</span>
+        </div>
+        <form id="address-form" class="edit-form" method="POST" action="account.php">
+          <input type="text" name="new_address" value="<?php echo $_SESSION['user_address']; ?>" required class="form-control my-2">
+          <button type="submit" name="edit_address" class="btn btn-sm btn-primary">Save Address</button>
+        </form>
 
 
         <p><a href="#orders" id="orders-btn">Your orders</a></p>
@@ -351,6 +433,15 @@ function editField(field) {
 
 </script>
 
+<script>
+function editField(field) {
+  const fields = ['name', 'email', 'phone', 'city', 'address'];
+  fields.forEach(f => {
+    document.getElementById(f + '-form').style.display = (f === field) ? 'block' : 'none';
+    document.getElementById(f + '-display').style.display = (f === field) ? 'none' : 'inline';
+  });
+}
+</script>
 
 
 <!-- CSS styles for editing (додай у style.css або тут у <style>) -->
