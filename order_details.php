@@ -44,7 +44,8 @@ function calculateTotalOrderPrice($order_details){
         <table class="mt-5 pt-5 mx-auto">
              <tr>
                 <th>Product</th>
-                <th>Price</th>
+                <th>Size</th>
+                <th>Product Price</th>
                 <th>Quantity</th>
                
             
@@ -63,7 +64,9 @@ function calculateTotalOrderPrice($order_details){
                       </div> 
                      
                   </td>
-
+                    <td>
+                        <span><?php echo $row['product_size'];?></span>
+                    </td>
                   <td>
                     <span>$<?php echo $row['product_price'];?></span>
                   </td>

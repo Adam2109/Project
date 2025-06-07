@@ -8,6 +8,14 @@ if (isset($_GET['product_id'])) {
     $stmt->bind_param("i", $product_id);
     $stmt->execute();
     $product = $stmt->get_result();
+    $size_stmt = $conn->prepare("SELECT size FROM product_sizes WHERE product_id = ?");
+    $size_stmt->bind_param("i", $product_id);
+    $size_stmt->execute();
+    $sizes_result = $size_stmt->get_result();
+    $sizes = [];
+    while ($size_row = $sizes_result->fetch_assoc()) {
+    $sizes[] = $size_row['size'];
+}
 } else {
     header('location: index.php');
     exit;
@@ -88,6 +96,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
             <input type="hidden" name="product_name" value="<?php echo $row['product_name']; ?>"/>
             <input type="hidden" name="product_price" value="<?php echo $row['product_price']; ?>"/>
             <input type="number" name="product_quantity" value="1" min="1" class="me-2"/>
+            <input type="hidden" name="product_size" id="product_size">
             <button class="buy-btn" type="submit" name="add_to_cart">Add To Cart</button>
           </form>
 
@@ -101,6 +110,80 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
         </form>
 
         </div>
+<style>
+  .size-boxes {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .size-box {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #000;
+    text-align: center;
+    line-height: 46px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.2s ease-in-out;
+    user-select: none;
+  }
+
+  .size-box:hover {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  .size-box.disabled {
+    text-decoration: line-through;
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .size-box.active {
+    background-color: #000;
+    color: #fff;
+    opacity: 1;
+  }
+
+  input[name="product_size"] {
+    display: none;
+  }
+</style>
+
+<div class="mb-3">
+  <label class="form-label fw-semibold">Select Size:</label>
+  <div class="size-boxes">
+    <?php
+      $all_sizes = ['S', 'M', 'L', 'XL'];
+      foreach ($all_sizes as $sz):
+        $is_available = in_array($sz, $sizes);
+    ?>
+      <div class="size-box <?php echo !$is_available ? 'disabled' : ''; ?>" 
+           data-size="<?php echo $sz; ?>">
+        <?php echo $sz; ?>
+      </div>
+    <?php endforeach; ?>
+  </div>
+  <input type="hidden" name="product_size" id="product_size" required>
+</div>
+
+<script>
+  const sizeBoxes = document.querySelectorAll('.size-box');
+  const sizeInput = document.getElementById('product_size');
+
+  sizeBoxes.forEach(box => {
+    if (!box.classList.contains('disabled')) {
+      box.addEventListener('click', function() {
+        sizeBoxes.forEach(b => b.classList.remove('active'));
+        box.classList.add('active');
+        sizeInput.value = box.getAttribute('data-size');
+      });
+    }
+  });
+</script>
+
 
         <h4 class="mt-5 mb-3">Product details</h4>
         <span><?php echo $row['product_description']; ?></span>

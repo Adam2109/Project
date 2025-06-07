@@ -45,11 +45,12 @@
                     $product_image = $product['product_image'];
                     $product_price = $product['product_price'];
                     $product_quantity = $product['product_quantity'];
+                    $product_size = $product['product_size'];
                 //store each single item in order_items
-                    $stmt1 = $conn->prepare("INSERT INTO order_items (order_id,product_id,product_name,product_image,product_price,product_quantity,user_id,order_date)
-                                    VALUES (?,?,?,?,?,?,?,?)");
+                    $stmt1 = $conn->prepare("INSERT INTO order_items (order_id,product_id,product_name,product_image,product_price,product_quantity,user_id,order_date, product_size)
+                                    VALUES (?,?,?,?,?,?,?,?,?)");
                     
-                    $stmt1->bind_param('iissiiis',$order_id,$product_id,$product_name,$product_image,$product_price,$product_quantity,$user_id,$order_date);
+                    $stmt1->bind_param('iissiiiss',$order_id,$product_id,$product_name,$product_image,$product_price,$product_quantity,$user_id,$order_date,$product_size);
                     $stmt1->execute();
                 }
                 
