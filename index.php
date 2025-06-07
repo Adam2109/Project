@@ -60,7 +60,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
     <div class="one col-lg-4 col-md-12 col-sm-12">
       <img class="img-fluid" src="assets/imgs/Bag1.jpeg"/>
       <div class="details">
-        <h2>50% OFF Accessories</h2>
+        <h2>50% OFF Bags</h2>
         <button class="text-uppercase">Shop Now</button>
       </div>
     </div>
