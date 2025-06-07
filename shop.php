@@ -4,7 +4,7 @@
 
 // Справочники для фильтров
 
-$all_categories = ['shoes', 't-shirts', 'accessories', 'featured'];
+$all_categories = ['shoes', 't-shirts', 'accessories', 'bags'];
 
 $sports = ['Football', 'Running', 'Basketball', 'Gym'];
 

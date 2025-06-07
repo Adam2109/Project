@@ -7,11 +7,7 @@ if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
     exit;
 }
 
-// ↓ если нужно редактировать конкретный товар, получите его здесь
-// $stmt = $conn->prepare('SELECT * FROM products WHERE id = ?');
-// $stmt->bind_param('i', $_GET['id']);
-// $stmt->execute();
-// $product = $stmt->get_result()->fetch_assoc();
+
 ?>
 
 <?php
@@ -29,14 +25,33 @@ if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
     $category = $_POST['category'];
     $color = $_POST['color'];
     $sale = $_POST['sale'];
-    
+    $sport_type = $_POST['sport_type'];
+    $brand = $_POST['brand'];
+    $material = $_POST['material'];
+
     $stmt = $conn->prepare("UPDATE products SET product_name=?, 
-                                                product_description=?,
-                                                product_price=?,
-                                                product_category=?,
-                                                product_color=?,
-                                                product_special_offer=? WHERE product_id=?");
-    $stmt->bind_param('ssssssi',$title, $description, $price, $category, $color, $sale, $product_id);
+                                            product_description=?,
+                                            product_price=?,
+                                            product_category=?,
+                                            product_color=?,
+                                            product_special_offer=?,
+                                            sport_type=?,
+                                            brand=?,
+                                            material=?
+                                            WHERE product_id=?");
+
+    $stmt->bind_param('sssssssssi', 
+        $title, 
+        $description, 
+        $price, 
+        $category, 
+        $color, 
+        $sale,
+        $sport_type,
+        $brand,
+        $material,
+        $product_id
+    );
 
     if($stmt->execute()) {
         header('location: products.php?edit_seccess_message=Product updated successfully');
@@ -112,10 +127,10 @@ if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
                 <div class="mb-3">
                     <label for="category" class="form-label fw-semibold">Category</label>
                     <select class="form-select" id="category" name="category">
-                        <option value="bags">Bags</option>
-                        <option value="shoes">Shoes</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="accessories">Accessories</option>
+                        <option value="bags" <?= $product['product_category'] == 'bags' ? 'selected' : '' ?>>Bags</option>
+                        <option value="shoes" <?= $product['product_category'] == 'shoes' ? 'selected' : '' ?>>Shoes</option>
+                        <option value="t-shirts" <?= $product['product_category'] == 't-shirts' ? 'selected' : '' ?>>T-Shirts</option>
+                        <option value="accessories" <?= $product['product_category'] == 'accessories' ? 'selected' : '' ?>>Accessories</option>
                     </select>
                 </div>
 
@@ -133,7 +148,38 @@ if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
                            placeholder="Sale %"
                            value="<?php echo $product['product_special_offer'] ?>">
                 </div>
-                 
+                <!-- Sport Type -->
+                <div class="mb-3">
+                    <label for="sport_type" class="form-label fw-semibold">Sport Type</label>
+                    <select class="form-select" id="sport_type" name="sport_type">
+                        <option value="Football" <?= $product['sport_type'] == 'Football' ? 'selected' : '' ?>>Football</option>
+                        <option value="Running" <?= $product['sport_type'] == 'Running' ? 'selected' : '' ?>>Running</option>
+                        <option value="Basketball" <?= $product['sport_type'] == 'Basketball' ? 'selected' : '' ?>>Basketball</option>
+                        <option value="Gym" <?= $product['sport_type'] == 'Gym' ? 'selected' : '' ?>>Gym</option>
+                    </select>
+                </div>
+
+                <!-- Brand -->
+                <div class="mb-3">
+                    <label for="brand" class="form-label fw-semibold">Brand</label>
+                    <select class="form-select" id="brand" name="brand">
+                        <option value="Nike" <?= $product['brand'] == 'Nike' ? 'selected' : '' ?>>Nike</option>
+                        <option value="Adidas" <?= $product['brand'] == 'Adidas' ? 'selected' : '' ?>>Adidas</option>
+                        <option value="Puma" <?= $product['brand'] == 'Puma' ? 'selected' : '' ?>>Puma</option>
+                        <option value="Reebok" <?= $product['brand'] == 'Reebok' ? 'selected' : '' ?>>Reebok</option>
+                    </select>
+                </div>
+
+                <!-- Material -->
+                <div class="mb-3">
+                    <label for="material" class="form-label fw-semibold">Material</label>
+                    <select class="form-select" id="material" name="material">
+                        <option value="Cotton" <?= $product['material'] == 'Cotton' ? 'selected' : '' ?>>Cotton</option>
+                        <option value="Polyester" <?= $product['material'] == 'Polyester' ? 'selected' : '' ?>>Polyester</option>
+                        <option value="Nylon" <?= $product['material'] == 'Nylon' ? 'selected' : '' ?>>Nylon</option>
+                        <option value="Wool" <?= $product['material'] == 'Wool' ? 'selected' : '' ?>>Wool</option>
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-primary" name="edit_btn">Save changes</button>
                 <a href="index.php" class="btn btn-outline-secondary ms-2">Cancel</a>
                  <?php } ?>

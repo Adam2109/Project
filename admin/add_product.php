@@ -69,6 +69,38 @@ if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
                     <label for="color" class="form-label fw-semibold">Color</label>
                     <input type="text" id="color" name="color" class="form-control" placeholder="Color">
                 </div>
+                <!-- Sport Type -->
+                <div class="mb-3">
+                    <label for="sport_type" class="form-label fw-semibold">Sport Type</label>
+                    <select id="sport_type" name="sport_type" class="form-select">
+                        <option value="Football">Football</option>
+                        <option value="Running">Running</option>
+                        <option value="Basketball">Basketball</option>
+                        <option value="Gym">Gym</option>
+                    </select>
+                </div>
+
+                <!-- Brand -->
+                <div class="mb-3">
+                    <label for="brand" class="form-label fw-semibold">Brand</label>
+                    <select id="brand" name="brand" class="form-select">
+                        <option value="Nike">Nike</option>
+                        <option value="Adidas">Adidas</option>
+                        <option value="Puma">Puma</option>
+                        <option value="Reebok">Reebok</option>
+                    </select>
+                </div>
+
+                <!-- Material -->
+                <div class="mb-3">
+                    <label for="material" class="form-label fw-semibold">Material</label>
+                    <select id="material" name="material" class="form-select">
+                        <option value="Cotton">Cotton</option>
+                        <option value="Polyester">Polyester</option>
+                        <option value="Nylon">Nylon</option>
+                        <option value="Wool">Wool</option>
+                    </select>
+                </div>
 
                 <div class="mb-3">
                     <label for="image1" class="form-label fw-semibold">Image 1</label>
