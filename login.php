@@ -32,7 +32,7 @@ if (isset($_POST['login_btn'])) {
     exit;
   }
 
-  // Хешування пароля (NB: краще використовувати password_hash у майбутньому)
+  // Хешування пароля 
   $password = md5($password);
 
   // Перевірка користувача
@@ -141,7 +141,7 @@ if (isset($_GET['message']) && $_GET['message'] === 'login_required') {
     });
   </script>
   <script>
-  // Наприклад, Ctrl + Shift + A для переходу на admin login
+  
   document.addEventListener('keydown', function (e) {
     if (e.ctrlKey && e.shiftKey && e.key === 'X') {
       window.location.href = 'admin/login.php';

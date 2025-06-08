@@ -2,7 +2,7 @@
 
 <?php
 
-// Справочники для фильтров
+
 
 $all_categories = ['shoes', 't-shirts', 'accessories', 'bags'];
 
@@ -123,14 +123,14 @@ if (isset($_POST['search'])) {
     }
 
 
-$join_sizes = false; // додай перед фільтрами
+$join_sizes = false; // 
 
 if (!empty($size)) {
     $placeholders = implode(',', array_fill(0, count($size), '?'));
     $conditions[] = "product_sizes.size IN ($placeholders)";
     $params = array_merge($params, $size);
     $types .= str_repeat("s", count($size));
-    $join_sizes = true; // ОБОВ'ЯЗКОВО
+    $join_sizes = true; // 
 }
   
 

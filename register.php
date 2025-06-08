@@ -64,7 +64,7 @@ if (isset($_POST['register'])) {
         header('location: register.php?error=User with this email already exists');
         exit;
     } else {
-        // У майбутньому краще використовувати password_hash
+        
         $hashedPassword = md5($password);
 
         $stmt = $conn->prepare("INSERT INTO users (user_name, user_email, user_password, user_phone, user_city, user_address)
