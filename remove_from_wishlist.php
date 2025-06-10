@@ -1,22 +1,28 @@
 <?php
+
 session_start();
 include('server/connection.php');
+header('Content-Type: application/json');
 
-// Перевірка на авторизацію
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+if (!isset($_SESSION['logged_in']) || !isset($_SESSION['user_id'])) {
+    echo json_encode(['success' => false, 'message' => 'Not authorized']);
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
-    $user_id = $_SESSION['user_id'];
-    $product_id = intval($_POST['product_id']);
+$user_id = $_SESSION['user_id'];
+$product_id = intval($_POST['product_id'] ?? 0);
 
-    // Видалення товару зі списку бажань
-    $stmt = $conn->prepare("DELETE FROM wishlist WHERE user_id = ? AND product_id = ?");
-    $stmt->bind_param("ii", $user_id, $product_id);
-    $stmt->execute();
+if (!$product_id) {
+    echo json_encode(['success' => false, 'message' => 'No product selected']);
+    exit;
 }
 
-header('Location: wishlist.php'); // Перенаправлення на сторінку списку бажань
+$stmt = $conn->prepare("DELETE FROM wishlist WHERE user_id = ? AND product_id = ?");
+$stmt->bind_param("ii", $user_id, $product_id);
+if ($stmt->execute()) {
+    echo json_encode(['success' => true, 'message' => 'Product removed from wishlist.']);
+} else {
+    echo json_encode(['success' => false, 'message' => 'Error removing product from wishlist.']);
+}
 exit;
+?>

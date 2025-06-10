@@ -26,7 +26,7 @@ $wishlist = $stmt->get_result();
 ?>
 
 <!-- Wishlist -->
-<section class="container my-5 py-5">
+<section class="container my-5 py-5 wishlist-section">
     <div class="container mt-5">
         <h2 class="font-weight-bold">My Wishlist</h2>
         <hr>
@@ -40,39 +40,33 @@ $wishlist = $stmt->get_result();
     <?php endif; ?>
 
     <?php if ($wishlist->num_rows > 0): ?>
-        <div class="row">
-            <?php while ($item = $wishlist->fetch_assoc()): ?>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card h-100" style="border: 2px solid #333333; border-radius: 10px;">
-                        <img src="assets/imgs/<?php echo $item['product_image']; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($item['product_name'], ENT_QUOTES); ?>"/>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title"><?php echo htmlspecialchars($item['product_name'], ENT_QUOTES); ?></h5>
-                            <p class="card-text"><?php echo $item['product_price']; ?>$ </p>
-                            <form method="POST" action="cart.php" class="d-inline">
-                                <input type="hidden" name="product_id" value="<?php echo $item['product_id']; ?>"/>
-                                <input type="hidden" name="product_image" value="<?php echo $item['product_image']; ?>"/>
-                                <input type="hidden" name="product_name" value="<?php echo $item['product_name']; ?>"/>
-                                <input type="hidden" name="product_price" value="<?php echo $item['product_price']; ?>"/>
-                                <input type="hidden" name="product_quantity" value="1"/>
-                                <button class="buy-btn btn-sm" name="add_to_cart" type="submit">
-                                    Add to Cart
-                                </button>
-                            </form>
-
-                            <form method="POST" action="remove_from_wishlist.php" class="d-inline">
-                                <input type="hidden" name="product_id" value="<?php echo $item['product_id']; ?>"/>
-                                <button class="btn btn-link btn-sm text-danger" style="font-size: 1.5rem; padding: 10px; margin-top: 10px; align-self: flex-end;">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+    <div class="row mx-auto container">
+        <?php while ($item = $wishlist->fetch_assoc()): ?>
+            <div class="product text-center col-lg-3 col-md-4 col-sm-12 mb-4" style="position: relative;">
+                <!-- Кнопка wishlist (сердечко) -->
+               <button type="button"
+        class="wishlist-btn active"
+        data-product-id="<?php echo $item['product_id']; ?>"
+        title="Remove from wishlist"
+        style="position:absolute;top:10px;right:10px;z-index:2;">
+        <i class="far fa-heart"></i>
+        <i class="fas fa-heart"></i>
+    </button>
+                <img class="img-fluid mb-3" src="assets/imgs/<?php echo $item['product_image']; ?>" />
+                <div class="star">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
                 </div>
-            <?php endwhile; ?>
-        </div>
-    <?php else: ?>
-        <p class="text-center">Your wish list is empty.</p>
-    <?php endif; ?>
+                <h5 class="p-name"><?php echo htmlspecialchars($item['product_name'], ENT_QUOTES); ?></h5>
+                <h4 class="p-price">$<?php echo $item['product_price']; ?></h4>
+                <a class="btn buy-btn" href="single_product.php?product_id=<?php echo $item['product_id']; ?>">Buy Now</a>
+            </div>
+        <?php endwhile; ?>
+    </div>
+<?php else: ?>
+    <p class="text-center">Your wish list is empty.</p>
+<?php endif; ?>
+<script src="assets/js/wishlist.js"></script>
 </section>
 
 <?php include('layouts/footer.php'); ?>

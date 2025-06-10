@@ -1,41 +1,38 @@
 <?php
+
 session_start();
 include('server/connection.php');
-if(!isset($_SESSION['logged_in'])){
-        header('Location: wishlist_check.php');
 
-        exit;
-       //if user is logged in
-    }else{
-// Перевірка на авторизацію
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+header('Content-Type: application/json');
+
+if (!isset($_SESSION['logged_in']) || !isset($_SESSION['user_id'])) {
+    echo json_encode(['success' => false, 'message' => 'Please log in to use wishlist']);
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
-$product_id = intval($_POST['product_id']);
+$product_id = intval($_POST['product_id'] ?? 0);
 
-// Перевірка, чи товар вже в списку бажань
+if (!$product_id) {
+    echo json_encode(['success' => false, 'message' => 'No product selected']);
+    exit;
+}
+
 $query = $conn->prepare("SELECT 1 FROM wishlist WHERE user_id = ? AND product_id = ?");
 $query->bind_param("ii", $user_id, $product_id);
 $query->execute();
 $query->store_result();
 
 if ($query->num_rows === 0) {
-    // Додавання товару в список бажань
     $stmt = $conn->prepare("INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)");
     $stmt->bind_param("ii", $user_id, $product_id);
     if ($stmt->execute()) {
-        $_SESSION['message'] = "Product successfully added to wishlist!";
+        echo json_encode(['success' => true, 'message' => 'Product successfully added to wishlist!']);
     } else {
-        $_SESSION['message'] = "Error adding product to wishlist.";
+        echo json_encode(['success' => false, 'message' => 'Error adding product to wishlist.']);
     }
 } else {
-    $_SESSION['message'] = "This product is already on your wishlist.";
+    echo json_encode(['success' => false, 'message' => 'This product is already on your wishlist.']);
 }
-
-header('Location: wishlist.php'); // Перенаправлення на сторінку списку бажань
 exit;
-}
 ?>

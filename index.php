@@ -23,7 +23,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
     <h5>NEW ARRIVALS</h5>
     <h1><span>Best Prices</span> This Season</h1>
     <p>Eshop offers the best products for the most affordable prices</p>
-    <button>Shop Now</button>
+    <button onclick="location.href='shop.php'">Shop Now</button>
   </div>
 </section>
 
@@ -45,7 +45,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
       <img class="img-fluid" src="assets/imgs/1.jpeg"/>
       <div class="details">
         <h2>Extreamely Awesome Shoes</h2>
-        <button class="text-uppercase">Shop Now</button>
+        <button onclick="location.href='shop.php'">Shop Now</button>
       </div>
     </div>
     <!--Two-->
@@ -53,7 +53,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
       <img class="img-fluid" src="assets/imgs/white t-shirt1.jpeg"/>
       <div class="details">
         <h2>Awesome Clothes</h2>
-        <button class="text-uppercase">Shop Now</button>
+        <button onclick="location.href='shop.php'">Shop Now</button>
       </div>
     </div>
     <!--Three-->
@@ -61,7 +61,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
       <img class="img-fluid" src="assets/imgs/Bag1.jpeg"/>
       <div class="details">
         <h2>50% OFF Bags</h2>
-        <button class="text-uppercase">Shop Now</button>
+        <button onclick="location.href='shop.php'">Shop Now</button>
       </div>
     </div>
   </div>
@@ -79,12 +79,16 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
     <?php while($row = $featured_products->fetch_assoc()) { ?>
       <div class="product text-center col-lg-3 col-md-4 col-sm-12" style="position: relative;">
         <!-- Wishlist button -->
-        <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
-          <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
-          <button type="submit" class="wishlist-btn" title="Add to wishlist">
-            <i class="far fa-heart"></i>
-            <i class="fas fa-heart"></i>
-          </button>
+         <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
+                    <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
+                    <button type="button"
+                            class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>"
+                            data-product-id="<?php echo $row['product_id']; ?>"
+                            title="Add to wishlist">
+                        <i class="far fa-heart"></i>
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </form>
         </form>
 
         <img class="img-fluid mb-3" src="assets/imgs/<?php echo $row['product_image'];?>"/>
@@ -108,7 +112,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
   <div class="container">
     <h4>MID SEASON'S SALE</h4>
     <h1>Season Collection <br> UP to 30% OFF</h1>  
-    <button class="text-uppercase">shop now</button>
+   <button onclick="location.href='shop.php'">Shop Now</button>
   </div>
 </section>
 
@@ -125,11 +129,15 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
       <div class="product text-center col-lg-3 col-md-4 col-sm-12" style="position: relative;">
         <!-- Wishlist button -->
         <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
-          <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
-          <button type="submit" class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>" title="Add to wishlist">
-            <i class="far fa-heart"></i>
-            <i class="fas fa-heart"></i>
-          </button>
+                    <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
+                    <button type="button"
+                            class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>"
+                            data-product-id="<?php echo $row['product_id']; ?>"
+                            title="Add to wishlist">
+                        <i class="far fa-heart"></i>
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </form>
         </form>
 
 
@@ -161,13 +169,16 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
     <?php while($row = $accessories->fetch_assoc()){ ?>
       <div class="product text-center col-lg-3 col-md-4 col-sm-12" style="position: relative;">
        <!-- Wishlist button -->
-        <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
-          <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
-          <button type="submit" class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>" title="Add to wishlist">
-            <i class="far fa-heart"></i>
-            <i class="fas fa-heart"></i>
-          </button>
-        </form>
+         <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
+                    <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
+                    <button type="button"
+                            class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>"
+                            data-product-id="<?php echo $row['product_id']; ?>"
+                            title="Add to wishlist">
+                        <i class="far fa-heart"></i>
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </form>
 
 
         <img class="img-fluid mb-3" src="assets/imgs/<?php echo $row['product_image']?>"/>
@@ -198,13 +209,16 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
     <?php while($row = $shoes->fetch_assoc()){ ?>
       <div class="product text-center col-lg-3 col-md-4 col-sm-12" style="position: relative;">
         <!-- Wishlist button -->
-        <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
-          <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
-          <button type="submit" class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>" title="Add to wishlist">
-            <i class="far fa-heart"></i>
-            <i class="fas fa-heart"></i>
-          </button>
-        </form>
+         <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
+                    <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
+                    <button type="button"
+                            class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>"
+                            data-product-id="<?php echo $row['product_id']; ?>"
+                            title="Add to wishlist">
+                        <i class="far fa-heart"></i>
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </form>
 
 
         <img class="img-fluid mb-3" src="assets/imgs/<?php echo $row['product_image']?>"/>
@@ -221,6 +235,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
       </div>
     <?php } ?>
   </div>
+  
 </section>
-
+<script src="assets/js/wishlist.js"></script>
 <?php include('layouts/footer.php');?>

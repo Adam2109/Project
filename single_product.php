@@ -14,8 +14,8 @@ if (isset($_GET['product_id'])) {
     $sizes_result = $size_stmt->get_result();
     $sizes = [];
     while ($size_row = $sizes_result->fetch_assoc()) {
-    $sizes[] = $size_row['size'];
-}
+        $sizes[] = $size_row['size'];
+    }
 } else {
     header('location: index.php');
     exit;
@@ -34,11 +34,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
     }
 }
 
-
-
 ?>
-
-
 
 <!-- Single product -->
 <section class="container single-product my-5 pt-5">
@@ -90,25 +86,22 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
 
         <div class="product-actions d-flex align-items-center gap-2 mt-3">
           <!-- Add to Cart -->
-          <form method="POST" action="cart.php" class="d-inline-block">
+          <form method="POST" action="cart.php" class="d-inline-block" id="addToCartForm">
             <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
             <input type="hidden" name="product_image" value="<?php echo $row['product_image']; ?>"/>
             <input type="hidden" name="product_name" value="<?php echo $row['product_name']; ?>"/>
             <input type="hidden" name="product_price" value="<?php echo $row['product_price']; ?>"/>
             <input type="number" name="product_quantity" value="1" min="1" class="me-2"/>
-            <input type="hidden" name="product_size" id="product_size">
-            <button class="buy-btn" type="submit" name="add_to_cart">Add To Cart</button>
+            <input type="hidden" name="product_size" id="product_size" required>
+            <button class="buy-btn" type="submit" name="add_to_cart" id="addToCartBtn" disabled>Add To Cart</button>
           </form>
 
           <!-- Add to Wishlist -->
-          <form method="POST" action="add_to_wishlist.php" class="d-inline-block">
-          <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
-          <button type="submit" class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>" title="Add to wishlist">
+          <button type="button" class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>"
+            data-product-id="<?php echo $row['product_id']; ?>" title="Add to wishlist">
             <i class="far fa-heart"></i>
             <i class="fas fa-heart"></i>
           </button>
-        </form>
-
         </div>
 <style>
   .size-boxes {
@@ -172,6 +165,11 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
 <script>
   const sizeBoxes = document.querySelectorAll('.size-box');
   const sizeInput = document.getElementById('product_size');
+  const addToCartBtn = document.getElementById('addToCartBtn');
+  const addToCartForm = document.getElementById('addToCartForm');
+
+  // Отключаем кнопку по умолчанию
+  addToCartBtn.disabled = true;
 
   sizeBoxes.forEach(box => {
     if (!box.classList.contains('disabled')) {
@@ -179,11 +177,20 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
         sizeBoxes.forEach(b => b.classList.remove('active'));
         box.classList.add('active');
         sizeInput.value = box.getAttribute('data-size');
+        addToCartBtn.disabled = false;
       });
     }
   });
-</script>
 
+  // Блокируем отправку формы, если размер не выбран
+  addToCartForm.addEventListener('submit', function(e) {
+    if (!sizeInput.value) {
+      e.preventDefault();
+      addToCartBtn.disabled = true;
+      alert('Please select a size before adding to cart.');
+    }
+  });
+</script>
 
         <h4 class="mt-5 mb-3">Product details</h4>
         <span><?php echo $row['product_description']; ?></span>
@@ -191,27 +198,6 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
       </div>
 
     <?php } ?>
-  </div>
-</section>
-
-<!-- Related products -->
-<section id="related-products" class="my-5 pb-5">
-  <div class="container text-center mt-5 py-5">
-    <h3>Related products</h3>
-    <hr class="mx-auto">
-  </div>
-  <div class="row mx-auto container-fluid">
-    <!-- Example of one product -->
-    <div class="product text-center col-lg-3 col-md-4 col-sm-12">
-      <img class="img-fluid mb-3" src="assets/imgs/featured1.jpeg" />
-      <div class="star">
-        <i class="fas fa-star"></i><!-- ... -->
-      </div>
-      <h5 class="p-name">Sports Shoes</h5>
-      <h4 class="p-price">$199.99</h4>
-      <button class="buy-btn">Buy Now</button>
-    </div>
-    <!-- More related products ... -->
   </div>
 </section>
 
@@ -224,5 +210,5 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
     }
   }
 </script>
-
+<script src="assets/js/wishlist.js"></script>
 <?php include('layouts/footer.php'); ?>

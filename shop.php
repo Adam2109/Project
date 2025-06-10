@@ -438,7 +438,10 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
             <div class="product text-center col-lg-3 col-md-4 col-sm-12" style="position: relative;">
                 <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
                     <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>"/>
-                    <button type="submit" class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>" title="Add to wishlist">
+                    <button type="button"
+                            class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>"
+                            data-product-id="<?php echo $row['product_id']; ?>"
+                            title="Add to wishlist">
                         <i class="far fa-heart"></i>
                         <i class="fas fa-heart"></i>
                     </button>
@@ -470,7 +473,9 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
             </ul>
         </nav>
     </div>
+<script src="assets/js/wishlist.js"></script>
 </section>
+
 </main>
 
 <?php include('layouts/footer.php'); ?>

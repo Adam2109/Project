@@ -51,6 +51,23 @@ if (isset($_POST['login_btn'])) {
       $_SESSION['user_email'] = $user_email;
       $_SESSION['logged_in'] = true;
 
+      // Восстановление корзины из БД
+      $cart_stmt = $conn->prepare("SELECT * FROM cart WHERE user_id = ?");
+      $cart_stmt->bind_param("i", $user_id);
+      $cart_stmt->execute();
+      $cart_result = $cart_stmt->get_result();
+      $_SESSION['cart'] = [];
+      while ($row = $cart_result->fetch_assoc()) {
+        $_SESSION['cart'][$row['product_id']] = [
+          'product_id' => $row['product_id'],
+          'product_name' => $row['product_name'],
+          'product_price' => $row['product_price'],
+          'product_image' => $row['product_image'],
+          'product_quantity' => $row['product_quantity'],
+          'product_size' => $row['product_size']
+        ];
+      }
+
       header('location: account.php?login_success=logged in successfully');
     } else {
       header('location: login.php?error=Could not verify your account');
@@ -82,10 +99,10 @@ if (isset($_GET['message']) && $_GET['message'] === 'login_required') {
 
     <form id="login-form" method="POST" action="login.php">
       <?php if (isset($_GET['error'])): ?>
-  <div id="error-alert" class="alert alert-danger text-center">
-    <?php echo htmlspecialchars($_GET['error']); ?>
-  </div>
-<?php endif; ?>
+        <div id="error-alert" class="alert alert-danger text-center">
+          <?php echo htmlspecialchars($_GET['error']); ?>
+        </div>
+      <?php endif; ?>
 
       <div class="form-group">
         <label>Email</label>
@@ -101,7 +118,6 @@ if (isset($_GET['message']) && $_GET['message'] === 'login_required') {
       <div class="form-group">
         <a id="register-url" class="btn" href="register.php">Don't have account? Register</a>
       </div>
-      
     </form>
   </div>
 
@@ -114,13 +130,13 @@ if (isset($_GET['message']) && $_GET['message'] === 'login_required') {
       }, 5000);
     }
 
-      // Автоматично ховає повідомлення про помилку
-  const errorAlert = document.getElementById('error-alert');
-  if (errorAlert) {
-    setTimeout(() => {
-      errorAlert.style.display = 'none';
-    }, 5000);
-  }
+    // Автоматично ховає повідомлення про помилку
+    const errorAlert = document.getElementById('error-alert');
+    if (errorAlert) {
+      setTimeout(() => {
+        errorAlert.style.display = 'none';
+      }, 5000);
+    }
     // JS-валідація
     document.getElementById('login-form').addEventListener('submit', function (e) {
       const email = document.getElementById('login-email').value.trim();
@@ -141,14 +157,12 @@ if (isset($_GET['message']) && $_GET['message'] === 'login_required') {
     });
   </script>
   <script>
-  
-  document.addEventListener('keydown', function (e) {
-    if (e.ctrlKey && e.shiftKey && e.key === 'X') {
-      window.location.href = 'admin/login.php';
-    }
-  });
-</script>
-
+    document.addEventListener('keydown', function (e) {
+      if (e.ctrlKey && e.shiftKey && e.key === 'X') {
+        window.location.href = 'admin/login.php';
+      }
+    });
+  </script>
 </section>
 
 <?php include('layouts/footer.php'); ?>

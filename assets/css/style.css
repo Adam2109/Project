@@ -217,6 +217,27 @@ button:hover{
     float: left;
   }
 
+.btn-link-as-button {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 900;
+    outline: none;
+    border: none;
+    background-color: #1d1d1d;
+    color: aliceblue;
+    padding: 13px 30px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.5s ease;
+    text-align: center;
+    text-decoration: none;
+}
+.btn-link-as-button:hover {
+    background-color: coral;
+    color: #fff;
+}
+
+
 
 .cart-quantity{
     background-color: #fb774b;
@@ -732,6 +753,10 @@ th:last-child{
     right: 10px;
     z-index: 10;
 }
+
+.wishlist-section {
+    min-height: 60vh;
+}
 /* 5) Якщо товар вже у списку бажаного — підсвічуємо серце coral одразу */
 .wishlist-btn.active .far {
   display: none;
@@ -956,3 +981,80 @@ button.remove-btn:hover {
 #autoFiltersForm a {
     text-decoration: none !important;
 }
+
+
+/* ...existing code... */
+@media (max-width: 991.98px) {
+  #brand .row img,
+  #featured .product,
+  #t-shirts .product,
+  #accessories .product,
+  #shoes .product {
+    margin-bottom: 24px;
+  }
+}
+@media (max-width: 767.98px) {
+  #brand .row img,
+  #featured .product,
+  #t-shirts .product,
+  #accessories .product,
+  #shoes .product {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+  #brand .row,
+  .container-fluid,
+  .container {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  #home h1 {
+    font-size: 2rem;
+  }
+  #home h5 {
+    font-size: 1.1rem;
+  }
+  #home p {
+    font-size: 1rem;
+  }
+  #home button {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .product .buy-btn,
+  .product .wishlist-btn {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .details h2 {
+    font-size: 1.2rem;
+  }
+  .details button {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  #mobileFilters {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+}
+@media (max-width: 575.98px) {
+  #brand .row img,
+  #featured .product,
+  #t-shirts .product,
+  #accessories .product,
+  #shoes .product {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .container,
+  .container-fluid {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+  }
+}
+/* ...existing code... */
