@@ -2,7 +2,7 @@
 <?php
 include('server/connection.php');
 
-// Восстановление корзины из БД при входе пользователя
+
 if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id']) && !isset($_SESSION['cart'])) {
     $user_id = $_SESSION['user_id'];
     $stmt = $conn->prepare("SELECT * FROM cart WHERE user_id = ?");
@@ -59,7 +59,7 @@ if(isset($_POST['add_to_cart'])){
         $_SESSION['cart'][$product_id] = $product_array;
     }
 
-    // Сохраняем в БД, если пользователь залогинен
+
     if(isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
         $stmt = $conn->prepare("INSERT INTO cart (user_id, product_id, product_name, product_price, product_image, product_quantity, product_size)
@@ -84,7 +84,7 @@ if(isset($_POST['add_to_cart'])){
     $product_id = $_POST['product_id'];
     unset($_SESSION['cart'][$product_id]);
 
-    // Удаляем из БД, если пользователь залогинен
+   
     if(isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
         $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ? AND product_id = ?");
@@ -103,7 +103,7 @@ if(isset($_POST['add_to_cart'])){
 
     $_SESSION['cart'][$product_id] = $product_array;
 
-    // Обновляем в БД, если пользователь залогинен
+
     if(isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
         $stmt = $conn->prepare("UPDATE cart SET product_quantity = ? WHERE user_id = ? AND product_id = ?");

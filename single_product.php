@@ -164,7 +164,7 @@ $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to ca
   </div>
   <input type="hidden" name="product_size" id="product_size" required>
   <?php 
-    // Если категория равна shoes, выводим ссылку на размерную сетку ниже
+    
     if(isset($row['product_category']) && strtolower($row['product_category']) === 'shoes') { 
   ?>
       <div class="mt-2">
@@ -179,7 +179,7 @@ $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to ca
           const addToCartBtn = document.getElementById('addToCartBtn');
           const addToCartForm = document.getElementById('addToCartForm');
           
-          // Отключаем кнопку по умолчанию
+         
           addToCartBtn.disabled = true;
           
           sizeBoxes.forEach(box => {
@@ -193,7 +193,7 @@ $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to ca
             }
           });
           
-          // Проверка отправки формы
+         
           addToCartForm.addEventListener('submit', function(e) {
             if (!sizeInput.value) {
               e.preventDefault();
