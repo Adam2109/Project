@@ -82,11 +82,11 @@ $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to ca
           </div>
         </div>
       </div>
-
+      
       <div class="col-lg-6 col-md-12 col-12">
         <h3 class="py-4"><?php echo $row['product_name']; ?></h3>
-        <h2><?php echo $row['product_price']; ?></h2>
-
+        <h2>$<?php echo $row['product_price']; ?></h2>
+        
         <div class="product-actions d-flex align-items-center gap-2 mt-3">
           <!-- Add to Cart -->
           <form method="POST" action="<?php echo $formAction; ?>" class="d-inline-block" id="addToCartForm">
@@ -101,7 +101,7 @@ $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to ca
               Add To Cart
             </button>
           </form>
-
+          
           <!-- Add to Wishlist -->
           <button type="button" class="wishlist-btn <?php echo in_array($row['product_id'], $wishlist_product_ids) ? 'active' : ''; ?>"
             data-product-id="<?php echo $row['product_id']; ?>" title="Add to wishlist">
@@ -109,7 +109,7 @@ $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to ca
             <i class="fas fa-heart"></i>
           </button>
         </div>
-
+        
         <style>
           .size-boxes {
             display: flex;
@@ -146,33 +146,42 @@ $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to ca
             display: none;
           }
         </style>
-
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Select Size:</label>
-          <div class="size-boxes">
-            <?php
-              $all_sizes = ['S', 'M', 'L', 'XL'];
-              foreach ($all_sizes as $sz):
-                $is_available = in_array($sz, $sizes);
-            ?>
-              <div class="size-box <?php echo !$is_available ? 'disabled' : ''; ?>" 
-                   data-size="<?php echo $sz; ?>">
-                <?php echo $sz; ?>
-              </div>
-            <?php endforeach; ?>
-          </div>
-          <input type="hidden" name="product_size" id="product_size" required>
-        </div>
-
+        
+        <!-- Размеры и Size Chart (для товаров категории shoes) -->
+<div class="mb-3">
+  <label class="form-label fw-semibold">Select Size:</label>
+  <div class="size-boxes">
+    <?php
+      $all_sizes = ['S', 'M', 'L', 'XL'];
+      foreach ($all_sizes as $sz):
+        $is_available = in_array($sz, $sizes);
+    ?>
+      <div class="size-box <?php echo !$is_available ? 'disabled' : ''; ?>" 
+           data-size="<?php echo $sz; ?>">
+        <?php echo $sz; ?>
+      </div>
+    <?php endforeach; ?>
+  </div>
+  <input type="hidden" name="product_size" id="product_size" required>
+  <?php 
+    // Если категория равна shoes, выводим ссылку на размерную сетку ниже
+    if(isset($row['product_category']) && strtolower($row['product_category']) === 'shoes') { 
+  ?>
+      <div class="mt-2">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#sizeChartModal">Size Chart</a>
+      </div>
+  <?php } ?>
+</div>
+        
         <script>
           const sizeBoxes = document.querySelectorAll('.size-box');
           const sizeInput = document.getElementById('product_size');
           const addToCartBtn = document.getElementById('addToCartBtn');
           const addToCartForm = document.getElementById('addToCartForm');
-
+          
           // Отключаем кнопку по умолчанию
           addToCartBtn.disabled = true;
-
+          
           sizeBoxes.forEach(box => {
             if (!box.classList.contains('disabled')) {
               box.addEventListener('click', function() {
@@ -183,7 +192,7 @@ $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to ca
               });
             }
           });
-
+          
           // Проверка отправки формы
           addToCartForm.addEventListener('submit', function(e) {
             if (!sizeInput.value) {
@@ -193,13 +202,56 @@ $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to ca
             }
           });
         </script>
-
+        
         <h4 class="mt-5 mb-3">Product details</h4>
         <span><?php echo $row['product_description']; ?></span>
       </div>
     <?php } ?>
   </div>
 </section>
+
+<!-- Modal Size Chart (only for shoes) -->
+<div class="modal fade" id="sizeChartModal" tabindex="-1" aria-labelledby="sizeChartModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sizeChartModalLabel">Size Chart</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Size</th>
+              <th>Measurement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>S</td>
+              <td>36 - 38</td>
+            </tr>
+            <tr>
+              <td>M</td>
+              <td>39 - 41</td>
+            </tr>
+            <tr>
+              <td>L</td>
+              <td>42 - 44</td>
+            </tr>
+            <tr>
+              <td>XL</td>
+              <td>45+</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   const mainImg = document.getElementById("mainImg");
