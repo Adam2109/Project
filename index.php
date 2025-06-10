@@ -67,16 +67,16 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
   </div>
 </section>
   
-<!--Featured-->
-<section id="featured" class="my-5 pb5">
+<!--bags-->
+<section id="bags" class="my-5 pb5">
   <div class="container text-center mt-5 py-5">
-    <h3>Our Featured</h3>
+    <h3>Our Bags</h3>
     <hr class="mx-auto">
-    <p>Here you can check out our featured products</p>
+    <p>Here you can check out our best bags</p>
   </div>
   <div class="row mx-auto container-fluid">
-    <?php include('server/get_featured_products.php');?>
-    <?php while($row = $featured_products->fetch_assoc()) { ?>
+    <?php include('server/get_bags.php');?>
+    <?php while($row = $bags->fetch_assoc()) { ?>
       <div class="product text-center col-lg-3 col-md-4 col-sm-12" style="position: relative;">
         <!-- Wishlist button -->
          <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
