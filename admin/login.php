@@ -2,7 +2,7 @@
 session_start();
 include('../server/connection.php');
 
-// Если админ уже вошёл — перенаправление
+
 if (isset($_SESSION['admin_logged_in'])) {
     header('Location: index.php');
     exit;
@@ -10,12 +10,11 @@ if (isset($_SESSION['admin_logged_in'])) {
 
 $error = '';
 
-// Обработка входа
+
 if (isset($_POST['login_btn'])) {
     $email    = $_POST['email'];
-    $password = $_POST['password']; // Без md5
+    $password = $_POST['password']; 
 
-    // Получение данных админа по email
     $stmt = $conn->prepare("SELECT admin_id, admin_name, admin_email, admin_password FROM admins WHERE admin_email = ? LIMIT 1");
     $stmt->bind_param('s', $email);
     $stmt->execute();
@@ -23,7 +22,7 @@ if (isset($_POST['login_btn'])) {
     $stmt->bind_result($admin_id, $admin_name, $admin_email, $hashed_password);
     $stmt->fetch();
 
-    // Проверка пароля
+    
     if ($stmt->num_rows() === 1 && password_verify($password, $hashed_password)) {
         $_SESSION['admin_id']        = $admin_id;
         $_SESSION['admin_name']      = $admin_name;

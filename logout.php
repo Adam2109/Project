@@ -17,7 +17,7 @@ if (isset($_SESSION['user_id'])) {
     }
 }
 
-// Очищаем данные корзины из сессии
+
 unset($_SESSION['cart']);
 unset($_SESSION['total']);
 unset($_SESSION['quantity']);

@@ -16,10 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     if (isActive) {
                         this.classList.remove('active');
-                        // Если на странице wishlist, скрываем карточку
+                        
                         const card = this.closest('.product');
                         if (card && window.location.pathname.includes('wishlist.php')) {
                             card.remove();
+                            
+                            if (document.querySelectorAll('.product').length === 0) {
+                                location.reload();
+                            }
                         }
                     } else {
                         this.classList.add('active');
