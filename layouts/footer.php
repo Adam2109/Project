@@ -39,9 +39,9 @@
             <div class="row">
               <img src="assets/imgs/featured1.jpeg" class="img-fluid w-25 h-100 m-2"/>
               <img src="assets/imgs/featured2.jpeg" class="img-fluid w-25 h-100 m-2"/>
-              <img src="assets/imgs/featured3.jpeg" class="img-fluid w-25 h-100 m-2"/>
+              <img src="assets/imgs/Bag1.jpeg" class="img-fluid w-25 h-100 m-2"/>
               <img src="assets/imgs/featured4.jpeg" class="img-fluid w-25 h-100 m-2"/>
-              <img src="assets/imgs/clothes1.jpeg" class="img-fluid w-25 h-100 m-2"/>
+              <img src="assets/imgs/white t-shirt1.jpeg" class="img-fluid w-25 h-100 m-2"/>
             </div>
           </div>
         </div>
@@ -49,7 +49,7 @@
         <div class="copyright mt-5">
           <div class="row container mx-auto">
             <div class="col-lg-3 col-md-5 col-sm-12 mb-4">
-              <img src="assets/imgs/payment.jpeg"/>
+              <img src="assets/imgs/PayPal.png"/>
             </div>
             <div class="col-lg-3 col-md-5 col-sm-12 mb-4 text-nowrap mb-2"> 
               <p>eCommerce @ 2025 All Right Reserved</p>

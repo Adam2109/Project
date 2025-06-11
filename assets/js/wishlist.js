@@ -43,5 +43,5 @@ function showWishlistAlert(message, success) {
     alert.style.zIndex = 9999;
     alert.innerText = message;
     document.body.appendChild(alert);
-    setTimeout(() => alert.remove(), 3000);
+    setTimeout(() => alert.remove(), 2000);
 }

@@ -147,7 +147,7 @@ $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to ca
           }
         </style>
         
-        <!-- Размеры и Size Chart (для товаров категории shoes) -->
+        <!--  Size Chart (для  shoes) -->
 <div class="mb-3">
   <label class="form-label fw-semibold">Select Size:</label>
   <div class="size-boxes">
