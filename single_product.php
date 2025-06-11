@@ -35,7 +35,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] && isset($_SESSION['
     }
 }
 
-// Если пользователь не залогинен, перенаправляем форму на страницу логина с сообщением
+
 $isLoggedIn = (isset($_SESSION['logged_in']) && $_SESSION['logged_in']);
 $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to cart, you must be logged in.";
 

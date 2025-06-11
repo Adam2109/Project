@@ -30,7 +30,7 @@ session_start();
                 <li class="nav-item"><a class="nav-link" href="shop.php">Shop</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.php">Contact us</a></li>
                 <li class="nav-item">
-                    <a href="cart.php"><i class="fas fa-shopping-bag"></i></a>
+                    <a href="cart.php"><i class="fas fa-shopping-bag"><span></span></i></a>
                     <a href="account.php"><i class="fas fa-user"></i></a>
 
                     <!-- Перевірка на авторизацію -->

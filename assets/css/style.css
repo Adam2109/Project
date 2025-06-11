@@ -242,7 +242,7 @@ button:hover{
 .cart-quantity{
     background-color: #fb774b;
     color: #fff;
-    padding: 5px 6px;
+    padding: 3px 3px;
     border-radius: 60%;
     margin: -3px;
     font-size: 1rem;
@@ -459,7 +459,11 @@ footer .copyright img{
     font-size: 14px;
     background-color: white;
     border: none;
-    width: 100%;
+    width: 100px;  
+    height: 40px; 
+    display: inline-block;
+    text-align: center;
+    line-height: 30px;
 }
 
 .cart .edit-btn{
