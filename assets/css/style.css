@@ -1010,6 +1010,11 @@ button.remove-btn:hover {
     box-sizing: border-box;
     margin-bottom: 10px;
 }
+#priceInput {
+    width: 60px !important;
+    max-width: 140px !important;
+    min-width: 110px !important;
+}
 
 /* Убираем подчеркивание ссылок, если есть */
 #autoFiltersForm a {
