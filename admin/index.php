@@ -31,27 +31,10 @@ $stmt2->execute();
 $orders = $stmt2->get_result();
 ?>
 
-<!-- Верхняя панель
-<nav class="navbar navbar-dark bg-dark px-3" style="height:48px;">
-  <span class="navbar-brand mb-0 h1" style="font-weight:600;">Company name</span>
-  <a href="logout.php" class="text-white" style="text-decoration:none;">Sign out</a>
-</nav> -->
 
 <div class="container-fluid" style="background:#f9f9f9; min-height:100vh; padding:0;">
   <div class="row" style="min-height:calc(100vh - 48px);">
-    <!-- Сайдбар -->
-    <!-- <nav class="col-md-2 d-none d-md-block sidebar" style="background-color:#e5e5e5; padding-top:30px; min-height:100vh;">
-      <div class="sidebar-sticky">
-        <ul class="nav flex-column">
-          <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Account</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Add New Product</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
-        </ul>
-      </div>
-    </nav> -->
+    
 <?php include __DIR__ . '/sidemenu.php'; ?>
 
     <!-- Контент -->
@@ -102,7 +85,7 @@ $orders = $stmt2->get_result();
           <?php } ?>
         </tbody>
       </table>
-      <!-- Пагинация -->
+      <!-- Пагінація -->
       <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center mt-4">
           <li class="page-item <?= ($page_no <= 1) ? 'disabled' : '' ?>">

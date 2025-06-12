@@ -1,7 +1,7 @@
 <?php
 session_start();
 include __DIR__ . '/header.php';
-include __DIR__ . '/../server/connection.php'; // якщо потрібно
+include __DIR__ . '/../server/connection.php';
 ?>
 
 <?php

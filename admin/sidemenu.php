@@ -1,5 +1,5 @@
 <?php
-// admin/sidemenu.php
+
 
 // Отримуємо назву поточного скрипту
 $current = basename($_SERVER['SCRIPT_NAME']);
@@ -29,15 +29,7 @@ if ($result && $row = $result->fetch_assoc()) {
         </a>
       </li>
 
-      <!-- <li class="nav-item">
-        <a 
-          href="orders.php" 
-          class="nav-link<?= $current === 'orders.php' ? ' active' : '' ?>" 
-          <?= $current === 'orders.php' ? 'aria-current="page"' : '' ?>>
-          <span data-feather="file"></span>
-          Orders
-        </a>
-      </li> -->
+      
 
       <li class="nav-item">
         <a 

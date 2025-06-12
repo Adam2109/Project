@@ -144,14 +144,14 @@ if (isset($_POST['search']) || isset($_GET['search'])) {
     }
 
 
-$join_sizes = false; // 
+$join_sizes = false; 
 
 if (!empty($size)) {
     $placeholders = implode(',', array_fill(0, count($size), '?'));
     $conditions[] = "product_sizes.size IN ($placeholders)";
     $params = array_merge($params, $size);
     $types .= str_repeat("s", count($size));
-    $join_sizes = true; // 
+    $join_sizes = true; 
 }
   
 
@@ -439,7 +439,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
                             const div = document.createElement('div');
                             div.className = 'list-group-item list-group-item-action';
                             div.textContent = item;
-                            div.onmousedown = (e) => { // заменили onclick на onmousedown
+                            div.onmousedown = (e) => { 
                                 e.preventDefault();
                                 productNameInput.value = item;
                                 suggestionsBox.innerHTML = '';
@@ -506,7 +506,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
         <div class="applied-filters d-flex align-items-center flex-wrap mt-3" style="gap: 10px;">
             <?php
             
-            // Массивы для отображения фильтров
+            
             $filter_labels = [
                 'product_name' => 'Name',
                 'categories' => 'Category',
@@ -519,67 +519,67 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
             ];
             $has_filters = false;
    
-            // Функция для вывода фильтра с кнопкой удаления
+            
          function renderFilter($name, $value, $label, $original_filters) {
-    // Берём все выбранные значения из оригинального массива!
-    $all_values = $original_filters[$name] ?? [];
-    if (!is_array($all_values)) {
-        $all_values = [$all_values];
-    }
-    if (is_array($value)) {
-        foreach ($value as $v) {
-            echo '<form method="post" class="d-inline-block m-0 p-0" style="display:inline;">';
-            foreach ($original_filters as $key => $val) {
-                if ($key === $name) {
-                    // Исключаем только удаляемое значение
-                    if (is_array($all_values)) {
-                        foreach ($all_values as $vv) {
-                            if ($vv != $v) {
-                                echo '<input type="hidden" name="'.$key.'[]" value="'.htmlspecialchars($vv).'">';
+    
+            $all_values = $original_filters[$name] ?? [];
+            if (!is_array($all_values)) {
+                $all_values = [$all_values];
+            }
+            if (is_array($value)) {
+                foreach ($value as $v) {
+                    echo '<form method="post" class="d-inline-block m-0 p-0" style="display:inline;">';
+                    foreach ($original_filters as $key => $val) {
+                        if ($key === $name) {
+                        
+                            if (is_array($all_values)) {
+                                foreach ($all_values as $vv) {
+                                    if ($vv != $v) {
+                                        echo '<input type="hidden" name="'.$key.'[]" value="'.htmlspecialchars($vv).'">';
+                                    }
+                                }
+                            }
+                        } else {
+                            if (is_array($val)) {
+                                foreach ($val as $vv) {
+                                    echo '<input type="hidden" name="'.$key.'[]" value="'.htmlspecialchars($vv).'">';
+                                }
+                            } else {
+                                echo '<input type="hidden" name="'.$key.'" value="'.htmlspecialchars($val).'">';
                             }
                         }
                     }
-                } else {
-                    if (is_array($val)) {
-                        foreach ($val as $vv) {
-                            echo '<input type="hidden" name="'.$key.'[]" value="'.htmlspecialchars($vv).'">';
+                    echo '<input type="hidden" name="search" value="1">';
+                    
+                    echo '<input type="hidden" name="remove_filter_value" value="'.htmlspecialchars($v).'">';
+                    echo '<span class="badge bg-light text-dark me-1" style="font-size:1rem;">';
+                    echo $label.': '.htmlspecialchars($v);
+                    echo '<button type="submit" name="remove_filter" value="'.$name.'" class="btn btn-link btn-sm p-0 ms-1" style="color:#fb774b;text-decoration:none;font-size:1.1rem;">&times;</button>';
+                    echo '</span></form>';
+                }
+            } else {
+                echo '<form method="post" class="d-inline-block m-0 p-0" style="display:inline;">';
+                foreach ($original_filters as $key => $val) {
+                    if ($key !== $name) {
+                        if (is_array($val)) {
+                            foreach ($val as $vv) {
+                                echo '<input type="hidden" name="'.$key.'[]" value="'.htmlspecialchars($vv).'">';
+                            }
+                        } else {
+                            echo '<input type="hidden" name="'.$key.'" value="'.htmlspecialchars($val).'">';
                         }
-                    } else {
-                        echo '<input type="hidden" name="'.$key.'" value="'.htmlspecialchars($val).'">';
                     }
                 }
-            }
-            echo '<input type="hidden" name="search" value="1">';
-            // Новое скрытое поле для значения, которое нужно удалить
-            echo '<input type="hidden" name="remove_filter_value" value="'.htmlspecialchars($v).'">';
-            echo '<span class="badge bg-light text-dark me-1" style="font-size:1rem;">';
-            echo $label.': '.htmlspecialchars($v);
-            echo '<button type="submit" name="remove_filter" value="'.$name.'" class="btn btn-link btn-sm p-0 ms-1" style="color:#fb774b;text-decoration:none;font-size:1.1rem;">&times;</button>';
-            echo '</span></form>';
-        }
-    } else {
-        echo '<form method="post" class="d-inline-block m-0 p-0" style="display:inline;">';
-        foreach ($original_filters as $key => $val) {
-            if ($key !== $name) {
-                if (is_array($val)) {
-                    foreach ($val as $vv) {
-                        echo '<input type="hidden" name="'.$key.'[]" value="'.htmlspecialchars($vv).'">';
-                    }
-                } else {
-                    echo '<input type="hidden" name="'.$key.'" value="'.htmlspecialchars($val).'">';
-                }
+                echo '<input type="hidden" name="search" value="1">';
+                echo '<span class="badge bg-light text-dark me-1" style="font-size:1rem;">';
+                echo $label.': '.htmlspecialchars($value);
+                echo '<button type="submit" name="remove_filter" value="'.$name.'" class="btn btn-link btn-sm p-0 ms-1" style="color:#fb774b;text-decoration:none;font-size:1.1rem;">&times;</button>';
+                echo '</span></form>';
             }
         }
-        echo '<input type="hidden" name="search" value="1">';
-        echo '<span class="badge bg-light text-dark me-1" style="font-size:1rem;">';
-        echo $label.': '.htmlspecialchars($value);
-        echo '<button type="submit" name="remove_filter" value="'.$name.'" class="btn btn-link btn-sm p-0 ms-1" style="color:#fb774b;text-decoration:none;font-size:1.1rem;">&times;</button>';
-        echo '</span></form>';
-    }
-}
          
 
-            // Функция для скрытых полей кроме удаляемого фильтра
+           
             function hiddenInputsExcept($except, $except_value = null) {
             global $all_filters;
             $fields = ['product_name','categories','product_color','sport_type','brand','size','material','price','sort_by','search'];
@@ -596,7 +596,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
                     }
                 }
             }
-            // Для массива: исключаем только выбранное значение
+            
             if (is_array($all_filters[$except] ?? null) && $except_value !== null) {
                 foreach ($all_filters[$except] as $v) {
                     if ($v != $except_value) {
@@ -608,7 +608,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
         }
             $all_filters = $_POST + $_GET;
             $original_filters = $all_filters;
-            // Выводим фильтры
+           
           foreach ($filter_labels as $key => $label) {
             if (!empty($all_filters[$key]) && !(is_array($all_filters[$key]) && count(array_filter($all_filters[$key])) == 0)) {
                 $has_filters = true;
@@ -657,7 +657,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
             </div>
         <?php } ?>
             <?php
-            // Собираем фильтры из $_POST для передачи через GET
+           
             function build_query_string($exclude = []) {
             $params = [];
             $all_filters = $_POST + $_GET;

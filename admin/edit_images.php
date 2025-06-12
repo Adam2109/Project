@@ -42,7 +42,7 @@ if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
     <!-- Сайдбар -->
     <?php include __DIR__ . '/sidemenu.php'; ?>
 
-    <!-- Основной контент -->
+    <!-- Основний контент -->
     <main class="col-md-10 ms-sm-auto px-4 py-4">
       <h1 class="h3">Dashboard</h1>
       <h2 class="h4 mb-4">Update Product Images</h2>

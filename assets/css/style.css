@@ -215,12 +215,12 @@ button:hover{
 .shop-flex-container {
     display: flex;
     align-items: flex-start;
-    gap: 1px; /* расстояние между фильтрами и товарами */
+    gap: 1px; 
 }
 
 
 #search{
-    width: 30%; /* или 30%, как тебе удобно */
+    width: 30%; 
     min-width: 260px;
     max-width: 400px;
        
@@ -622,16 +622,14 @@ th:last-child{
 }
 
 .orders th{
-    /* text-align: left; */
+   
     padding: 5px 10px;
     color: #fff;
     background-color: #fb774b;
  
 }
 
-/*.orders th:nth-child(2){
-    text-align: right;
-}*/
+
 .orders td{
     padding: 10px 20px;
 }
@@ -677,8 +675,8 @@ th:last-child{
 }
 
 #paypal-button-container {
-    width: 400px; /* змініть ширину за необхідності */
-    margin: 20px auto; /* центрируємо по горизонталі */
+    width: 400px; 
+    margin: 20px auto; 
 }
 
 .wishlist-container {
@@ -834,7 +832,8 @@ th:last-child{
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
-    position: relative; /* Додаємо позицію для кнопки wishlist */}
+    position: relative; 
+  }
 
 .product img {
     width: 85%;
@@ -939,7 +938,7 @@ button.remove-btn:hover {
     background-color: #e85d3e;
 }
 
-/* Кнопка "Help" (стиль за потребою) */
+/* Кнопка "Help"  */
 .help-btn {
     position: fixed;
     bottom: 30px;
@@ -976,24 +975,24 @@ button.remove-btn:hover {
   padding: 0 5px;
 }
 
-/* Заголовки фильтров — коралловый, подчеркнутый */
+
 #autoFiltersForm label{
     font-size: 1.1rem;
     font-weight: 600;
     text-decoration: underline;
-    color: coral; /* коралловый */
+    color: coral; 
     
 }
 #autoFiltersForm h5 {
     font-size: 1.1rem;
     font-weight: 600;
     text-decoration: underline;
-    color: coral; /* коралловый */
-     text-align: center; /* Центрируем текст */
+    color: coral; 
+     text-align: center; 
     display: block; 
 }
 
-/* Пункты (например, Football, Running и др.) — светлый коралл */
+
 #autoFiltersForm .form-check-label {
     font-size: 0.875rem;
     text-decoration: none !important;
@@ -1016,7 +1015,7 @@ button.remove-btn:hover {
     min-width: 110px !important;
 }
 
-/* Убираем подчеркивание ссылок, если есть */
+
 #autoFiltersForm a {
     text-decoration: none !important;
 }
@@ -1078,7 +1077,7 @@ button.remove-btn:hover {
     font-size: 0.9rem;
   }
    #mobileFilters {
-    margin-bottom: 32px !important; /* увеличенный отступ снизу */
+    margin-bottom: 32px !important; 
     font-size: 1.15rem;
     font-weight: 600;
   }
@@ -1223,7 +1222,7 @@ button.remove-btn:hover {
 
 
 
-/* Фильтры и форма поиска */
+/* Фільтр і форма пошуку*/
 @media (max-width: 991.98px) {
   #register-form,
   #login-form {
@@ -1286,7 +1285,7 @@ button.remove-btn:hover {
 
 
 
-/* Карточки товаров */
+/* Карточки товарів */
 @media (max-width: 767.98px) {
   #register-form,
   #login-form {
@@ -1454,7 +1453,7 @@ button.remove-btn:hover {
 
 }
 
-/* Упрощаем фильтры на очень маленьких экранах */
+
 @media (max-width: 575.98px) {
   #search .container {
     padding: 0 2px !important;
@@ -1595,7 +1594,7 @@ button.remove-btn:hover {
   }
 }
 
-/* Пагинация */
+
 @media (max-width: 575.98px) {
   #register-form,
   #login-form {
@@ -2005,5 +2004,79 @@ button.remove-btn:hover {
     font-size: 0.85rem;
     padding: 1px 3px;
     margin-left: 0;
+  }
+}
+
+
+@media (max-width: 991.98px) {
+  #autoFiltersForm .row > div {
+    width: 100% !important;
+    max-width: 100%;
+  }
+  #search .container {
+    padding: 0 8px !important;
+  }
+
+  #mobileFilters {
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+  }
+}
+
+
+@media (max-width: 767.98px) {
+  .product {
+      width: 48%;
+      margin-bottom: 1.5rem;
+      padding: 10px;
+  }
+  .product img {
+      height: 200px;
+  }
+  .buy-btn {
+      font-size: 0.9rem;
+      padding: 8px 15px;
+  }
+}
+
+
+@media (max-width: 575.98px) {
+  .product {
+      width: 100% !important;
+      margin-bottom: 1rem;
+      padding: 8px;
+  }
+  .product img {
+      height: auto;
+      max-height: 150px;
+      width: 100% !important;
+  }
+  .buy-btn {
+      width: 100%;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      padding: 10px 0;
+  }
+  
+  #featured h3 {
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+  }
+  
+  #mobileFilters {
+      margin-bottom: 48px !important;
+      font-size: 1.1rem !important;
+      font-weight: 700 !important;
+      padding: 10px 2px !important;
+  }
+  #mobileFilters label, #mobileFilters h5 {
+      font-size: 1.1rem !important;
+  }
+  
+  #autoFiltersForm {
+      text-align: center;
   }
 }

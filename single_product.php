@@ -95,7 +95,7 @@ $formAction = $isLoggedIn ? "cart.php" : "login.php?error=To add a product to ca
             <input type="hidden" name="product_name" value="<?php echo $row['product_name']; ?>"/>
             <input type="hidden" name="product_price" value="<?php echo $row['product_price']; ?>"/>
             <input type="number" name="product_quantity" value="1" min="1" class="me-2"/>
-            <!-- Скрытое поле для выбранного размера -->
+            
             <input type="hidden" name="product_size" id="product_size" required>
             <button class="buy-btn" type="submit" name="add_to_cart" id="addToCartBtn" disabled>
               Add To Cart
