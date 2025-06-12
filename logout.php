@@ -12,7 +12,7 @@ if (isset($_SESSION['user_id'])) {
         $stmt->execute();
         error_log("Logout: Rows deleted = " . $stmt->affected_rows);
         if ($stmt->affected_rows === 0) {
-            error_log("Logout: No rows deleted. Возможно, в таблице cart установлены триггеры или другая логика обновления вместо удаления.");
+            error_log("Logout: No rows deleted. It is possible that the cart table has triggers or other update logic set up instead of deleting.");
         }
     }
 }

@@ -211,12 +211,26 @@ button:hover{
 }
 
 /* Product */
-#search{
-    width: 20%;
-    display: inline-block;
-    float: left;
-  }
 
+.shop-flex-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 1px; /* расстояние между фильтрами и товарами */
+}
+
+
+#search{
+    width: 30%; /* или 30%, как тебе удобно */
+    min-width: 260px;
+    max-width: 400px;
+       
+    padding-right: 0px;
+    box-sizing: border-box;
+  }
+#featured {
+    flex: 1 1 0%;
+    min-width: 0;
+}
 .btn-link-as-button {
     display: inline-block;
     font-size: 0.8rem;
@@ -247,6 +261,20 @@ button:hover{
     margin: -3px;
     font-size: 1rem;
 }
+
+.applied-filters .badge {
+    background: #fff;
+    color: #222;
+    border: 1px solid #fb774b;
+    border-radius: 20px;
+    padding: 8px 14px;
+    margin-right: 8px;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+
 
 .product{
     cursor: pointer;
@@ -969,16 +997,18 @@ button.remove-btn:hover {
 #autoFiltersForm .form-check-label {
     font-size: 0.875rem;
     text-decoration: none !important;
-    color: #ffffff; /* светлый коралл */
+    color: #ffffff; 
 }
 
-/* Остальные элементы формы */
 #autoFiltersForm input[type="text"],
+#autoFiltersForm input[type="number"],
 #autoFiltersForm select,
-#autoFiltersForm input[type="number"] {
-    font-size: 0.875rem;
-    text-decoration: none !important;
-    color: #555;
+#autoFiltersForm input[type="submit"] {
+    width: 220px;      
+    max-width: 100%;
+    min-width: 240px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
 }
 
 /* Убираем подчеркивание ссылок, если есть */
@@ -990,7 +1020,7 @@ button.remove-btn:hover {
 /* ...existing code... */
 @media (max-width: 991.98px) {
   #brand .row img,
-  #featured .product,
+  #bags .product,
   #t-shirts .product,
   #accessories .product,
   #shoes .product {
@@ -998,8 +1028,12 @@ button.remove-btn:hover {
   }
 }
 @media (max-width: 767.98px) {
+  #featured .container {
+    margin-top: 2.5rem !important;
+    padding-top: 2.5rem !important;
+  }
   #brand .row img,
-  #featured .product,
+  #bags .product,
   #t-shirts .product,
   #accessories .product,
   #shoes .product {
@@ -1038,17 +1072,44 @@ button.remove-btn:hover {
     width: 100%;
     font-size: 0.9rem;
   }
-  #mobileFilters {
-        background: #fff;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        margin-bottom: 20px;
-    }
+   #mobileFilters {
+    margin-bottom: 32px !important; /* увеличенный отступ снизу */
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  #mobileFilters label,
+  #mobileFilters h5 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  #mobileFilters,
+#mobileFilters label,
+#mobileFilters h5 {
+    font-weight: 800 !important;
+    font-size: 1.25rem !important;
+    color: coral !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+#mobileFilters input,
+#mobileFilters select {
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+}
+  #mobileFilters .form-check-label {
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+  #mobileFilters input,
+  #mobileFilters select {
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
 }
 @media (max-width: 575.98px) {
   #brand .row img,
-  #featured .product,
+  #bags .product,
   #t-shirts .product,
   #accessories .product,
   #shoes .product {
@@ -1060,5 +1121,884 @@ button.remove-btn:hover {
     padding-left: 2px !important;
     padding-right: 2px !important;
   }
+  .account-info {
+    padding: 10px 0 !important;
+  }
+  .editable-group label {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .editable-group {
+    margin-bottom: 14px;
+    font-size: 1rem;
+  }
+  .edit-icon {
+    font-size: 1.2rem;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .edit-form input,
+  .edit-form button,
+  #account-form input,
+  #account-form button {
+    width: 100% !important;
+    font-size: 1rem !important;
+    margin-bottom: 8px;
+  }
+  #account-form {
+    width: 98% !important;
+    margin: 10px auto !important;
+    padding: 10px !important;
+    border-radius: 10px;
+    background: #222 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  #account-form label {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  #account-form .form-group {
+    margin-bottom: 12px;
+  }
+  #change-pass-btn {
+    width: 100% !important;
+    font-size: 1.1rem !important;
+    padding: 12px 0 !important;
+    margin-top: 10px !important;
+  }
+  .orders table,
+  .orders th,
+  .orders td {
+    font-size: 0.95rem !important;
+    padding: 6px !important;
+  }
+  .orders th,
+  .orders td {
+    white-space: nowrap;
+  }
+  .orders .order-details-btn {
+    font-size: 0.95rem !important;
+    padding: 6px 10px !important;
+  }
+  #orders .container {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  .container.text-center.mt-3.pt-5 {
+    margin-top: 1.2rem !important;
+    padding-top: 1.2rem !important;
+  }
 }
-/* ...existing code... */
+@media (max-width: 449.98px) {
+  #account-form {
+    padding: 4px !important;
+    border-radius: 6px;
+  }
+  .editable-group label,
+  #account-form label {
+    font-size: 0.95rem !important;
+  }
+  .edit-form input,
+  .edit-form button,
+  #account-form input,
+  #account-form button {
+    font-size: 0.95rem !important;
+    padding: 8px !important;
+  }
+  .orders table,
+  .orders th,
+  .orders td {
+    font-size: 0.85rem !important;
+    padding: 4px !important;
+  }
+}
+
+
+
+
+/* Фильтры и форма поиска */
+@media (max-width: 991.98px) {
+  #register-form,
+  #login-form {
+    width: 98% !important;
+    padding: 10px !important;
+    margin: 0 auto !important;
+    border-top: none !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: #222 !important;
+    border-radius: 10px;
+  }
+  #register-form .form-group,
+  #login-form .form-group {
+    margin-bottom: 14px !important;
+  }
+  #register-form input,
+  #login-form input {
+    width: 100% !important;
+    font-size: 1rem !important;
+    padding: 10px !important;
+  }
+  #register-btn,
+  #login-btn,
+  #login-url,
+  #register-url {
+    width: 100% !important;
+    margin-top: 10px !important;
+    font-size: 1.1rem !important;
+    padding: 12px 0 !important;
+  }
+  .container.text-center.mt-3.pt-5 {
+    margin-top: 1.2rem !important;
+    padding-top: 1.2rem !important;
+  }
+  .mx-auto.container {
+    padding: 0 !important;
+  }
+  .alert {
+    font-size: 1rem !important;
+    padding: 10px !important;
+  }
+  
+    #search .container {
+    padding: 0 8px !important;
+  }
+  #autoFiltersForm .row > div {
+    width: 100% !important;
+    max-width: 100%;
+  }
+}
+#mobileFilters {
+ 
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+
+
+
+
+/* Карточки товаров */
+@media (max-width: 767.98px) {
+  #register-form,
+  #login-form {
+    width: 98% !important;
+    padding: 10px !important;
+    margin: 0 auto !important;
+    border-top: none !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: #222 !important;
+    border-radius: 10px;
+  }
+  #register-form .form-group,
+  #login-form .form-group {
+    margin-bottom: 14px !important;
+  }
+  #register-form input,
+  #login-form input {
+    width: 100% !important;
+    font-size: 1rem !important;
+    padding: 10px !important;
+  }
+  #register-btn,
+  #login-btn,
+  #login-url,
+  #register-url {
+    width: 100% !important;
+    margin-top: 10px !important;
+    font-size: 1.1rem !important;
+    padding: 12px 0 !important;
+  }
+  .container.text-center.mt-3.pt-5 {
+    margin-top: 1.2rem !important;
+    padding-top: 1.2rem !important;
+  }
+  .mx-auto.container {
+    padding: 0 !important;
+  }
+  .alert {
+    font-size: 1rem !important;
+    padding: 10px !important;
+  }
+  .account-info {
+    padding: 10px 0 !important;
+  }
+  .editable-group label {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .editable-group {
+    margin-bottom: 14px;
+    font-size: 1rem;
+  }
+  .edit-icon {
+    font-size: 1.2rem;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .edit-form input,
+  .edit-form button,
+  #account-form input,
+  #account-form button {
+    width: 100% !important;
+    font-size: 1rem !important;
+    margin-bottom: 8px;
+  }
+  #account-form {
+    width: 98% !important;
+    margin: 10px auto !important;
+    padding: 10px !important;
+    border-radius: 10px;
+    background: #222 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  #account-form label {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  #account-form .form-group {
+    margin-bottom: 12px;
+  }
+  #change-pass-btn {
+    width: 100% !important;
+    font-size: 1.1rem !important;
+    padding: 12px 0 !important;
+    margin-top: 10px !important;
+  }
+  .orders table,
+  .orders th,
+  .orders td {
+    font-size: 0.95rem !important;
+    padding: 6px !important;
+  }
+  .orders th,
+  .orders td {
+    white-space: nowrap;
+  }
+  .orders .order-details-btn {
+    font-size: 0.95rem !important;
+    padding: 6px 10px !important;
+  }
+  #orders .container {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  .container.text-center.mt-3.pt-5 {
+    margin-top: 1.2rem !important;
+    padding-top: 1.2rem !important;
+  }
+}
+@media (max-width: 449.98px) {
+  #account-form {
+    padding: 4px !important;
+    border-radius: 6px;
+  }
+  .editable-group label,
+  #account-form label {
+    font-size: 0.95rem !important;
+  }
+  .edit-form input,
+  .edit-form button,
+  #account-form input,
+  #account-form button {
+    font-size: 0.95rem !important;
+    padding: 8px !important;
+  }
+  .orders table,
+  .orders th,
+  .orders td {
+    font-size: 0.85rem !important;
+    padding: 4px !important;
+  }
+    .product {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+  .product img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 220px;
+    object-fit: cover;
+  }
+  .buy-btn {
+    width: 100%;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    padding: 12px 0;
+  }
+  .wishlist-btn-container {
+    top: 5px;
+    right: 5px;
+  }
+  .star {
+    font-size: 1rem;
+  }
+    #mobileFilters {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+}
+
+/* Упрощаем фильтры на очень маленьких экранах */
+@media (max-width: 575.98px) {
+  #search .container {
+    padding: 0 2px !important;
+  }
+  #autoFiltersForm label,
+  #autoFiltersForm h5 {
+    font-size: 1rem;
+  }
+  .product {
+    padding: 5px;
+  }
+  .product img {
+    max-height: 150px;
+  }
+  #mobileFilters {
+    margin-bottom: 48px !important;
+    font-size: 1.2rem !important;
+    font-weight: 800 !important;
+    color: coral !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 10px 2px !important;
+  }
+  #mobileFilters label,
+  #mobileFilters h5 {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    color: coral !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    letter-spacing: 0.5px;
+  }
+  #mobileFilters .form-check-label {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    color: coral !important;
+  }
+  #mobileFilters input,
+  #mobileFilters select {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+  }
+  #featured .container {
+    margin-top: 2.5rem !important;
+    padding-top: 2.5rem !important;
+  }
+  .account-info {
+    padding: 10px 0 !important;
+  }
+  .editable-group label {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .editable-group {
+    margin-bottom: 14px;
+    font-size: 1rem;
+  }
+  .edit-icon {
+    font-size: 1.2rem;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .edit-form input,
+  .edit-form button,
+  #account-form input,
+  #account-form button {
+    width: 100% !important;
+    font-size: 1rem !important;
+    margin-bottom: 8px;
+  }
+  #account-form {
+    width: 98% !important;
+    margin: 10px auto !important;
+    padding: 10px !important;
+    border-radius: 10px;
+    background: #222 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  #account-form label {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  #account-form .form-group {
+    margin-bottom: 12px;
+  }
+  #change-pass-btn {
+    width: 100% !important;
+    font-size: 1.1rem !important;
+    padding: 12px 0 !important;
+    margin-top: 10px !important;
+  }
+  .orders table,
+  .orders th,
+  .orders td {
+    font-size: 0.95rem !important;
+    padding: 6px !important;
+  }
+  .orders th,
+  .orders td {
+    white-space: nowrap;
+  }
+  .orders .order-details-btn {
+    font-size: 0.95rem !important;
+    padding: 6px 10px !important;
+  }
+  #orders .container {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  .container.text-center.mt-3.pt-5 {
+    margin-top: 1.2rem !important;
+    padding-top: 1.2rem !important;
+  }
+}
+@media (max-width: 449.98px) {
+  #account-form {
+    padding: 4px !important;
+    border-radius: 6px;
+  }
+  .editable-group label,
+  #account-form label {
+    font-size: 0.95rem !important;
+  }
+  .edit-form input,
+  .edit-form button,
+  #account-form input,
+  #account-form button {
+    font-size: 0.95rem !important;
+    padding: 8px !important;
+  }
+  .orders table,
+  .orders th,
+  .orders td {
+    font-size: 0.85rem !important;
+    padding: 4px !important;
+  }
+}
+
+/* Пагинация */
+@media (max-width: 575.98px) {
+  #register-form,
+  #login-form {
+    width: 98% !important;
+    padding: 10px !important;
+    margin: 0 auto !important;
+    border-top: none !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: #222 !important;
+    border-radius: 10px;
+  }
+  #register-form .form-group,
+  #login-form .form-group {
+    margin-bottom: 14px !important;
+  }
+  #register-form input,
+  #login-form input {
+    width: 100% !important;
+    font-size: 1rem !important;
+    padding: 10px !important;
+  }
+  #register-btn,
+  #login-btn,
+  #login-url,
+  #register-url {
+    width: 100% !important;
+    margin-top: 10px !important;
+    font-size: 1.1rem !important;
+    padding: 12px 0 !important;
+  }
+  .container.text-center.mt-3.pt-5 {
+    margin-top: 1.2rem !important;
+    padding-top: 1.2rem !important;
+  }
+  .mx-auto.container {
+    padding: 0 !important;
+  }
+  .alert {
+    font-size: 1rem !important;
+    padding: 10px !important;
+  }
+  
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .pagination .page-item {
+    margin-bottom: 4px;
+  }
+  #mobileFilters {
+    margin-bottom: 48px !important;
+    font-size: 1.2rem !important;
+    font-weight: 800 !important;
+    color: coral !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 10px 2px !important;
+  }
+  #mobileFilters label,
+  #mobileFilters h5 {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    color: coral !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    letter-spacing: 0.5px;
+  }
+  #mobileFilters .form-check-label {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    color: coral !important;
+  }
+  #mobileFilters input,
+  #mobileFilters select {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+  }
+  #featured .container {
+    margin-top: 2.5rem !important;
+    padding-top: 2.5rem !important;
+  }
+}
+@media (max-width: 449.98px) {
+  #mobileFilters {
+    margin-bottom: 32px !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    color: coral !important;
+    padding: 6px 1px !important;
+    border-radius: 6px;
+  }
+  #mobileFilters label,
+  #mobileFilters h5 {
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.2px;
+  }
+  #mobileFilters .form-check-label {
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+  }
+  #mobileFilters input,
+  #mobileFilters select {
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+  }
+  #featured .container {
+    margin-top: 1.2rem !important;
+    padding-top: 1.2rem !important;
+  }
+  .product {
+    padding: 2px !important;
+  }
+  .product img {
+    max-height: 100px !important;
+  }
+}
+@media (max-width: 449.98px) and (min-width: 375px) {
+  #register-form,
+  #login-form {
+    width: 98% !important;
+    padding: 10px !important;
+    margin: 0 auto !important;
+    border-top: none !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: #222 !important;
+    border-radius: 10px;
+  }
+  #register-form .form-group,
+  #login-form .form-group {
+    margin-bottom: 14px !important;
+  }
+  #register-form input,
+  #login-form input {
+    width: 100% !important;
+    font-size: 1rem !important;
+    padding: 10px !important;
+  }
+  #register-btn,
+  #login-btn,
+  #login-url,
+  #register-url {
+    width: 100% !important;
+    margin-top: 10px !important;
+    font-size: 1.1rem !important;
+    padding: 12px 0 !important;
+  }
+  .container.text-center.mt-3.pt-5 {
+    margin-top: 1.2rem !important;
+    padding-top: 1.2rem !important;
+  }
+  .mx-auto.container {
+    padding: 0 !important;
+  }
+  .alert {
+    font-size: 1rem !important;
+    padding: 10px !important;
+  }
+    #mobileFilters {
+    margin-bottom: 28px !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    color: coral !important;
+    padding: 8px 2px !important;
+    border-radius: 6px;
+  }
+  #mobileFilters label,
+  #mobileFilters h5 {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.2px;
+  }
+  #mobileFilters .form-check-label {
+    font-size: 0.98rem !important;
+    font-weight: 600 !important;
+  }
+  #mobileFilters input,
+  #mobileFilters select {
+    font-size: 0.98rem !important;
+    font-weight: 600 !important;
+  }
+  #featured .container {
+    margin-top: 1.5rem !important;
+    padding-top: 1.5rem !important;
+  }
+  .product {
+    padding: 4px !important;
+  }
+  .product img {
+    max-height: 120px !important;
+  }
+  .account-info {
+    padding: 10px 0 !important;
+  }
+  .editable-group label {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .editable-group {
+    margin-bottom: 14px;
+    font-size: 1rem;
+  }
+  .edit-icon {
+    font-size: 1.2rem;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .edit-form input,
+  .edit-form button,
+  #account-form input,
+  #account-form button {
+    width: 100% !important;
+    font-size: 1rem !important;
+    margin-bottom: 8px;
+  }
+  #account-form {
+    width: 98% !important;
+    margin: 10px auto !important;
+    padding: 10px !important;
+    border-radius: 10px;
+    background: #222 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  #account-form label {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  #account-form .form-group {
+    margin-bottom: 12px;
+  }
+  #change-pass-btn {
+    width: 100% !important;
+    font-size: 1.1rem !important;
+    padding: 12px 0 !important;
+    margin-top: 10px !important;
+  }
+  .orders table,
+  .orders th,
+  .orders td {
+    font-size: 0.95rem !important;
+    padding: 6px !important;
+  }
+  .orders th,
+  .orders td {
+    white-space: nowrap;
+  }
+  .orders .order-details-btn {
+    font-size: 0.95rem !important;
+    padding: 6px 10px !important;
+  }
+  #orders .container {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  .container.text-center.mt-3.pt-5 {
+    margin-top: 1.2rem !important;
+    padding-top: 1.2rem !important;
+  }
+}
+@media (max-width: 449.98px) {
+  #account-form {
+    padding: 4px !important;
+    border-radius: 6px;
+  }
+  .editable-group label,
+  #account-form label {
+    font-size: 0.95rem !important;
+  }
+  .edit-form input,
+  .edit-form button,
+  #account-form input,
+  #account-form button {
+    font-size: 0.95rem !important;
+    padding: 8px !important;
+  }
+  .orders table,
+  .orders th,
+  .orders td {
+    font-size: 0.85rem !important;
+    padding: 4px !important;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .navbar {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+  .navbar .logo {
+    width: 32px;
+    height: 32px;
+  }
+  .navbar .brand {
+    font-size: 1.1rem;
+    margin-left: 6px;
+  }
+  .navbar-nav {
+    background: #222 !important;
+    padding: 1rem 0.5rem;
+    border-radius: 8px;
+  }
+  .navbar-nav .nav-link {
+    color: #fff !important;
+    font-size: 1.1rem;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+  }
+  .navbar-nav .nav-link:last-child {
+    border-bottom: none;
+  }
+  .nav-buttons {
+    margin-left: 0 !important;
+    margin-top: 1rem;
+  }
+  .navbar .fas,
+  .navbar .far {
+    font-size: 1.3rem;
+    margin-left: 10px;
+  }
+  .cart-quantity {
+    font-size: 0.95rem;
+    padding: 2px 5px;
+    margin-left: 2px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .navbar .brand {
+    font-size: 1rem;
+  }
+  .navbar .logo {
+    width: 26px;
+    height: 26px;
+  }
+  .navbar-nav .nav-link {
+    font-size: 1rem;
+    padding: 7px 0;
+  }
+  .navbar .fas,
+  .navbar .far {
+    font-size: 1.1rem;
+    margin-left: 7px;
+  }
+}
+@media (max-width: 767.98px) {
+  .navbar {
+    padding-top: 0.7rem !important;
+    padding-bottom: 0.7rem !important;
+  }
+  .navbar .logo {
+    width: 28px;
+    height: 28px;
+  }
+  .navbar .brand {
+    font-size: 1rem;
+    margin-left: 4px;
+  }
+  .navbar-nav {
+    padding: 0.7rem 0.3rem;
+    border-radius: 6px;
+  }
+  .navbar-nav .nav-link {
+    font-size: 1rem;
+    padding: 7px 0;
+  }
+  .navbar .fas,
+  .navbar .far {
+    font-size: 1.1rem;
+    margin-left: 7px;
+  }
+  .cart-quantity {
+    font-size: 0.9rem;
+    padding: 2px 4px;
+    margin-left: 1px;
+  }
+}
+
+@media (max-width: 449.98px) {
+  .navbar {
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+  }
+  .navbar .logo {
+    width: 22px;
+    height: 22px;
+  }
+  .navbar .brand {
+    font-size: 0.9rem;
+    margin-left: 2px;
+  }
+  .navbar-nav {
+    padding: 0.5rem 0.1rem;
+    border-radius: 4px;
+  }
+  .navbar-nav .nav-link {
+    font-size: 0.92rem;
+    padding: 6px 0;
+  }
+  .navbar .fas,
+  .navbar .far {
+    font-size: 1rem;
+    margin-left: 5px;
+  }
+  .cart-quantity {
+    font-size: 0.85rem;
+    padding: 1px 3px;
+    margin-left: 0;
+  }
+}

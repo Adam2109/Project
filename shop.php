@@ -24,23 +24,15 @@ include('server/connection.php');
 
 $products = [];
 
-$categories = $_POST['categories'] ?? [];
-
-$price = $_POST['price'] ?? 1000;
-
-$product_name = trim($_POST['product_name'] ?? "");
-
-$product_color = $_POST['product_color'] ?? [];
-
-$sport_type = $_POST['sport_type'] ?? [];
-
-$brand = $_POST['brand'] ?? [];
-
-$size = $_POST['size'] ?? [];
-
-$material = $_POST['material'] ?? [];
-
-$sort_by = $_POST['sort_by'] ?? "";
+$categories = $_POST['categories'] ?? $_GET['categories'] ?? [];
+$price = $_POST['price'] ?? $_GET['price'] ?? 1000;
+$product_name = trim($_POST['product_name'] ?? $_GET['product_name'] ?? "");
+$product_color = $_POST['product_color'] ?? $_GET['product_color'] ?? [];
+$sport_type = $_POST['sport_type'] ?? $_GET['sport_type'] ?? [];
+$brand = $_POST['brand'] ?? $_GET['brand'] ?? [];
+$size = $_POST['size'] ?? $_GET['size'] ?? [];
+$material = $_POST['material'] ?? $_GET['material'] ?? [];
+$sort_by = $_POST['sort_by'] ?? $_GET['sort_by'] ?? "";
 
 $page_no = isset($_GET['page_no']) && $_GET['page_no'] != "" ? $_GET['page_no'] : 1;
 
@@ -56,9 +48,22 @@ $types = "";
 
 $conditions = [];
 
+if (isset($_POST['remove_filter'])) {
+   $remove = $_POST['remove_filter'];
+    $filters = $_POST;
+    unset($filters['remove_filter']);
+    unset($filters[$remove]);
+    $filters['page_no'] = 1;
+    $query = http_build_query($filters);
+    header("Location: shop.php?" . $query);
+    exit();
+}
+if (isset($_POST['clear_filters'])) {
+    header("Location: shop.php");
+    exit();
+}
 
-
-if (isset($_POST['search'])) {
+if (isset($_POST['search']) || isset($_GET['search'])) {
 
     if (!empty($categories)) {
 
@@ -287,10 +292,13 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
 ?>
 
 
-
 <main>
-
+<div class="shop-flex-container">
 <section id="search" class="my-5 py-5 ms-2">
+<button class="btn btn-primary d-md-none mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#mobileFilters" aria-expanded="false" aria-controls="mobileFilters">
+    Filters
+    <i class="fas fa-filter"></i>
+</button>
 
     <div class="container mt-5 py-5">
 
@@ -301,7 +309,7 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
     </div>
 
 
-
+<div class="collapse d-md-block" id="mobileFilters">
     <!-- 🔁 АВТОМАТИЧНІ ФІЛЬТРИ -->
 <form action="shop.php" method="POST" id="autoFiltersForm">
     <input type="hidden" name="search" value="1">
@@ -320,8 +328,8 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
 
             <!-- Product Name -->
             <label>Product Name</label>
-            <input type="text" name="product_name" class="form-control mb-3" value="<?= htmlspecialchars($product_name) ?>">
-
+            <input type="text" name="product_name" id="productNameInput" class="form-control mb-3" autocomplete="off" value="<?= htmlspecialchars($product_name) ?>">
+            <div id="suggestions" class="list-group position-absolute" style="z-index: 1000;"></div>
             <!-- Search Button -->
             <input type="submit" name="search" class="btn btn-primary mb-3" value="Search">
 
@@ -390,10 +398,57 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
     </div>
 </form>
 
+</div>
+<!-- JS для автодоповнення Product Name -->
+    <script>
+        const productNameInput = document.getElementById('productNameInput');
+        const suggestionsBox = document.getElementById('suggestions');
+        let debounceTimeout;
 
+        productNameInput.addEventListener('input', function() {
+            clearTimeout(debounceTimeout);
+            const query = this.value.trim();
+            if (query.length < 2) {
+                suggestionsBox.innerHTML = '';
+                suggestionsBox.style.display = 'none';
+                return;
+            }
+            debounceTimeout = setTimeout(() => {
+                fetch('server/search_suggestions.php?term=' + encodeURIComponent(query))
+                    .then(res => res.json())
+                    .then(data => {
+                        suggestionsBox.innerHTML = '';
+                        if (data.length > 0) {
+                            data.forEach(item => {
+                            const div = document.createElement('div');
+                            div.className = 'list-group-item list-group-item-action';
+                            div.textContent = item;
+                            div.onmousedown = (e) => { // заменили onclick на onmousedown
+                                e.preventDefault();
+                                productNameInput.value = item;
+                                suggestionsBox.innerHTML = '';
+                                suggestionsBox.style.display = 'none';
+                                productNameInput.form.submit();
+                            };
+                            suggestionsBox.appendChild(div);
+                        });
+                            suggestionsBox.style.display = 'block';
+                        } else {
+                            suggestionsBox.style.display = 'none';
+                        }
+                    });
+            }, 200);
+        });
 
+        document.addEventListener('click', function(e) {
+            if (!productNameInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                suggestionsBox.innerHTML = '';
+                suggestionsBox.style.display = 'none';
+            }
+        });
+    </script>
 
-    <!-- JavaScript для автосабміту -->
+    <!-- JS для автосабміту -->
 
     <script>
 
@@ -427,11 +482,138 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
 
 </section>
 
-<section id="featured" class="my-5 py-5">
+<section id="featured" class="my-5 py-5 flex-grow-1">
     <div class="container mt-5 py-5">
         <h3>Our Products</h3>
         <hr>
         <p>Here you can check out our products</p>
+        <div class="applied-filters d-flex align-items-center flex-wrap mt-3" style="gap: 10px;">
+            <?php
+            
+            // Массивы для отображения фильтров
+            $filter_labels = [
+                'product_name' => 'Name',
+                'categories' => 'Category',
+                'product_color' => 'Color',
+                'sport_type' => 'Sport',
+                'brand' => 'Brand',
+                'size' => 'Size',
+                'material' => 'Material',
+                // 'price' => 'Price ≤'
+            ];
+            $has_filters = false;
+   
+            // Функция для вывода фильтра с кнопкой удаления
+          function renderFilter($name, $value, $label, $original_filters) {
+    // Берём все выбранные значения из оригинального массива!
+            $all_values = $original_filters[$name] ?? [];
+            if (!is_array($all_values)) {
+                $all_values = [$all_values];
+            }
+            if (is_array($value)) {
+                foreach ($value as $v) {
+                    echo '<form method="post" class="d-inline-block m-0 p-0" style="display:inline;">';
+                    foreach ($original_filters as $key => $val) {
+                        if ($key === $name) {
+                            // Исключаем только удаляемое значение
+                            if (is_array($all_values)) {
+                                foreach ($all_values as $vv) {
+                                    if ($vv != $v) {
+                                        echo '<input type="hidden" name="'.$key.'[]" value="'.htmlspecialchars($vv).'">';
+                                    }
+                                }
+                            }
+                        } else {
+                            if (is_array($val)) {
+                                foreach ($val as $vv) {
+                                    echo '<input type="hidden" name="'.$key.'[]" value="'.htmlspecialchars($vv).'">';
+                                }
+                            } else {
+                                echo '<input type="hidden" name="'.$key.'" value="'.htmlspecialchars($val).'">';
+                            }
+                        }
+                    }
+                    echo '<input type="hidden" name="search" value="1">';
+                    echo '<span class="badge bg-light text-dark me-1" style="font-size:1rem;">';
+                    echo $label.': '.htmlspecialchars($v);
+                    echo '<button type="submit" name="remove_filter" value="'.$name.'" class="btn btn-link btn-sm p-0 ms-1" style="color:#fb774b;text-decoration:none;font-size:1.1rem;">&times;</button>';
+                    echo '</span></form>';
+                }
+            } else {
+                echo '<form method="post" class="d-inline-block m-0 p-0" style="display:inline;">';
+                foreach ($original_filters as $key => $val) {
+                    if ($key !== $name) {
+                        if (is_array($val)) {
+                            foreach ($val as $vv) {
+                                echo '<input type="hidden" name="'.$key.'[]" value="'.htmlspecialchars($vv).'">';
+                            }
+                        } else {
+                            echo '<input type="hidden" name="'.$key.'" value="'.htmlspecialchars($val).'">';
+                        }
+                    }
+                }
+                echo '<input type="hidden" name="search" value="1">';
+                echo '<span class="badge bg-light text-dark me-1" style="font-size:1rem;">';
+                echo $label.': '.htmlspecialchars($value);
+                echo '<button type="submit" name="remove_filter" value="'.$name.'" class="btn btn-link btn-sm p-0 ms-1" style="color:#fb774b;text-decoration:none;font-size:1.1rem;">&times;</button>';
+                echo '</span></form>';
+            }
+        }
+         
+
+            // Функция для скрытых полей кроме удаляемого фильтра
+            function hiddenInputsExcept($except, $except_value = null) {
+            global $all_filters;
+            $fields = ['product_name','categories','product_color','sport_type','brand','size','material','price','sort_by','search'];
+            $html = '';
+            foreach ($fields as $field) {
+                if ($field === $except) continue;
+                if (isset($all_filters[$field])) {
+                    if (is_array($all_filters[$field])) {
+                        foreach ($all_filters[$field] as $v) {
+                            $html .= '<input type="hidden" name="'.$field.'[]" value="'.htmlspecialchars($v).'">';
+                        }
+                    } else {
+                        $html .= '<input type="hidden" name="'.$field.'" value="'.htmlspecialchars($all_filters[$field]).'">';
+                    }
+                }
+            }
+            // Для массива: исключаем только выбранное значение
+            if (is_array($all_filters[$except] ?? null) && $except_value !== null) {
+                foreach ($all_filters[$except] as $v) {
+                    if ($v != $except_value) {
+                        $html .= '<input type="hidden" name="'.$except.'[]" value="'.htmlspecialchars($v).'">';
+                    }
+                }
+            }
+            return $html.'<input type="hidden" name="search" value="1">';
+        }
+            $all_filters = $_POST + $_GET;
+            $original_filters = $all_filters;
+            // Выводим фильтры
+          foreach ($filter_labels as $key => $label) {
+            if (!empty($all_filters[$key]) && !(is_array($all_filters[$key]) && count(array_filter($all_filters[$key])) == 0)) {
+                $has_filters = true;
+                renderFilter($key, $all_filters[$key], $label, $original_filters);
+            }
+        }
+            if (isset($all_filters['price']) && $all_filters['price'] != 1000) {
+                $has_filters = true;
+                renderFilter('price', $all_filters['price'], 'Price ≤', $original_filters);
+            }
+            if ($has_filters) {
+                echo '<form method="post" class="d-inline-block m-0 p-0" style="display:inline;">
+                    <button type="submit" name="clear_filters" class="btn btn-outline-dark btn-sm ms-2">Remove filters</button>
+                </form>';
+            }
+            
+            ?>
+        </div>
+        <?php if ($products->num_rows == 0): ?>
+            <div class="alert alert-warning mt-3" role="alert">
+                Sorry, this product was not found.
+            </div>
+        <?php endif; ?>
     </div>
     <div class="row mx-auto container">
         <?php while ($row = $products->fetch_assoc()) { ?>
@@ -456,26 +638,45 @@ if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])) {
                 <a class="btn buy-btn" href="single_product.php?product_id=<?php echo $row['product_id']; ?>">Buy Now</a>
             </div>
         <?php } ?>
-
+            <?php
+            // Собираем фильтры из $_POST для передачи через GET
+            function build_query_string($exclude = []) {
+            $params = [];
+            $all_filters = $_POST + $_GET;
+            $original_filters = $all_filters;
+            foreach ($all_filters as $key => $value) {
+                if (in_array($key, $exclude) || $key === 'page_no') continue;
+                if (is_array($value)) {
+                    foreach ($value as $v) {
+                        $params[] = urlencode($key . '[]') . '=' . urlencode($v);
+                    }
+                } else {
+                    $params[] = urlencode($key) . '=' . urlencode($value);
+                }
+            }
+            return implode('&', $params);
+        }
+        $query_string = build_query_string();
+            ?>
         <nav aria-label="Page navigation example" class="mx-auto">
             <ul class="pagination mt-5 mx-auto">
-                <li class="page-item <?php if ($page_no <= 1) echo 'disabled'; ?>">
-                    <a class="page-link" href="?page_no=<?php echo max(1, $page_no - 1); ?>">Previous</a>
+                 <li class="page-item <?php if ($page_no <= 1) echo 'disabled'; ?>">
+                    <a class="page-link" href="?page_no=<?php echo max(1, $page_no - 1); ?><?php echo $query_string ? '&'.$query_string : ''; ?>">Previous</a>
                 </li>
                 <?php for ($i = 1; $i <= $total_no_of_pages; $i++) { ?>
                     <li class="page-item <?php if ($page_no == $i) echo 'active'; ?>">
-                        <a class="page-link" href="?page_no=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        <a class="page-link" href="?page_no=<?php echo $i; ?><?php echo $query_string ? '&'.$query_string : ''; ?>"><?php echo $i; ?></a>
                     </li>
                 <?php } ?>
                 <li class="page-item <?php if ($page_no >= $total_no_of_pages) echo 'disabled'; ?>">
-                    <a class="page-link" href="?page_no=<?php echo min($total_no_of_pages, $page_no + 1); ?>">Next</a>
+                    <a class="page-link" href="?page_no=<?php echo min($total_no_of_pages, $page_no + 1); ?><?php echo $query_string ? '&'.$query_string : ''; ?>">Next</a>
                 </li>
             </ul>
         </nav>
     </div>
 <script src="assets/js/wishlist.js"></script>
 </section>
-
+</div>
 </main>
 
 <?php include('layouts/footer.php'); ?>
