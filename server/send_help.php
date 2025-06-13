@@ -2,7 +2,13 @@
 session_start();
 include(__DIR__ . '/connection.php');
 
-if (isset($_SESSION['user_id']) && isset($_POST['message'])) {
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../contact.php");
+    exit();
+}
+
+if (isset($_POST['message'])) {
     $user_id = $_SESSION['user_id'];
     $message = trim($_POST['message']);
 
@@ -16,3 +22,4 @@ if (isset($_SESSION['user_id']) && isset($_POST['message'])) {
 
 header("Location: ../contact.php");
 exit();
+?>

@@ -1,4 +1,7 @@
-<?php include('layouts/header.php'); ?>
+<?php 
+
+include('layouts/header.php'); 
+?>
 
 <!-- Contact -->
 <section id="contact" class="container my-5 py-5">
@@ -9,9 +12,16 @@
         <p class="w-50 mx-auto">Email address: <span>info@gmail.com</span></p>
         <p class="w-50 mx-auto">
             We work 24/7 to answer your questions.
-            <button id="helpBtn" class="btn btn-primary ms-3">
-                Help <span id="helpIcon"></span>
-            </button>
+            <?php if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])): ?>
+                <button id="helpBtn" class="btn btn-primary ms-3">
+                    Help <span id="helpIcon"></span>
+                </button>
+            <?php else: ?>
+                <button id="helpBtn" class="btn btn-secondary ms-3" disabled
+                        title="Please log in to ask for help">
+                    Help <span id="helpIcon"></span>
+                </button>
+            <?php endif; ?>
         </p>
     </div>
 </section>
@@ -21,28 +31,21 @@
     <div class="modal-content bg-white p-4" style="margin: 5% auto; border: 1px solid #888; width: 500px; max-height: 80%; overflow-y: auto; border-radius: 10px;">
         <span id="closeModal" style="float:right; font-size: 28px; cursor: pointer;">&times;</span>
         <h4>Ask for Help</h4>
-
-        <?php
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (isset($_SESSION['user_id'])) {
+        <?php if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])): ?>
+            <?php
             include('server/connection.php');
             $user_id = $_SESSION['user_id'];
-
             $stmt = $conn->prepare("SELECT message, reply, created_at FROM help_requests WHERE user_id = ? ORDER BY created_at DESC");
             $stmt->bind_param("i", $user_id);
-
-            if ($stmt->execute()) {
+            if($stmt->execute()){
                 $result = $stmt->get_result();
-                if ($result->num_rows > 0) {
+                if($result->num_rows > 0){
                     echo "<div class='mb-3' style='max-height: 300px; overflow-y: auto;'>";
-                    while ($row = $result->fetch_assoc()) {
+                    while($row = $result->fetch_assoc()){
                         echo "<div class='border rounded p-2 mb-3'>";
                         echo "<p class='text-muted mb-1'><strong>You:</strong><br>" . nl2br(htmlspecialchars($row['message'])) . "</p>";
                         echo "<small class='text-muted'>" . htmlspecialchars($row['created_at']) . "</small><br>";
-                        if (!empty($row['reply'])) {
+                        if(!empty($row['reply'])){
                             echo "<div class='alert alert-info mt-2 mb-0 p-2'><strong>Admin:</strong><br>" . nl2br(htmlspecialchars($row['reply'])) . "</div>";
                         } else {
                             echo "<div class='text-muted fst-italic mt-2'>Awaiting reply...</div>";
@@ -55,19 +58,16 @@
                 }
             }
             $stmt->close();
-        } else {
-            echo "<p class='text-danger'>Please <a href='login.php'>log in</a> to ask for help.</p>";
-        }
-        ?>
-
-        <?php if (isset($_SESSION['user_id'])): ?>
-        <form method="POST" action="server/send_help.php">
-            <div class="mb-3">
-                <label for="message" class="form-label">Your question</label>
-                <textarea class="form-control" name="message" rows="3" placeholder="Type your question..." required></textarea>
-            </div>
-            <input type="submit" class="btn btn-success" value="Send">
-        </form>
+            ?>
+            <form method="POST" action="server/send_help.php">
+                <div class="mb-3">
+                    <label for="message" class="form-label">Your question</label>
+                    <textarea class="form-control" name="message" rows="3" placeholder="Type your question..." required></textarea>
+                </div>
+                <input type="submit" class="btn btn-success" value="Send">
+            </form>
+        <?php else: ?>
+            <p class="text-danger">Please log in to ask for help.</p>
         <?php endif; ?>
     </div>
 </div>
@@ -77,23 +77,24 @@
     const btn = document.getElementById('helpBtn');
     const close = document.getElementById('closeModal');
 
+    <?php if (isset($_SESSION['logged_in']) && isset($_SESSION['user_id'])): ?>
     btn.onclick = () => {
         modal.style.display = "block";
-
-        // Очистити іконку 🔔
         btn.classList.remove('btn-warning');
         btn.classList.add('btn-primary');
         const icon = document.getElementById('helpIcon');
         if (icon) {
             icon.innerText = '';
         }
-
-        // Позначити повідомлення як прочитані
+        // Optionally, mark messages as read
         fetch('check_new_reply.php?mark_read=1');
     };
+    <?php endif; ?>
 
-    close.onclick = () => modal.style.display = "none";
-
+    if(close){
+        close.onclick = () => modal.style.display = "none";
+    }
+    
     window.onclick = event => {
         if (event.target == modal) {
             modal.style.display = "none";
@@ -107,7 +108,6 @@
                 if (data.new_reply && btn) {
                     btn.classList.remove('btn-primary');
                     btn.classList.add('btn-warning');
-
                     const icon = document.getElementById('helpIcon');
                     if (icon) {
                         icon.innerText = '🔔';
@@ -116,8 +116,8 @@
             })
             .catch(err => console.error('Check reply error:', err));
     }
-
-    // Запустити перевірку кожні 15 секунд
+    
+    // Run the check every 15 seconds
     setInterval(checkForNewReply, 15000);
     checkForNewReply();
 </script>
