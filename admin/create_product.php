@@ -75,11 +75,9 @@ if (isset($_POST['create_product'])) {
 }
 }
 ?>
-``` 
 
-Проверьте также, что в форме add_product.php доступны поля для Sport Type, Brand и Material (они должны передаваться через POST с именами "sport_type", "brand" и "material"). Это обеспечит корректное отображение этих данных при создании товара. 
 
-Если после этого товар ещё дублируется, убедитесь, что файл create_product.php не вставлен два раза или не вызывается дважды из формы.<?php
+<?php
 include('../server/connection.php');
 
 if (isset($_POST['create_product'])) {

@@ -1,7 +1,7 @@
 <?php include('layouts/header.php');?>
 <?php
 
-  // session_start();
+  
   if(isset($_POST['order_pay_btn'])){
     $order_status = $_POST['order_status'];
     $order_total_price = $_POST['order_total_price'];
@@ -24,14 +24,14 @@
               <?php $amount = strval( $_POST['order_total_price']); ?>
               <?php $order_id = $_POST['order_id']; ?>
               <p>Total payment: $<?php echo $_POST['order_total_price']; ?></p>
-              <!-- <input class="btn btn-primary" type="submit" value="Pay Now" /> -->
+              
                <div id="paypal-button-container"></div> 
         
         <?php } else if(isset($_SESSION['total']) && $_SESSION['total'] != 0) { ?>
              <?php $amount = strval( $_SESSION['total']); ?>
               <?php $order_id = $_SESSION['order_id']; ?>
               <p>Total payment: $<?php echo $_SESSION['total']; ?></p>
-             <!-- <input class="btn btn-primary" type="submit" value="Pay Now" /> -->
+             
               <div id="paypal-button-container"></div> 
           
              
